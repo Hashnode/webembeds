@@ -1,0 +1,26 @@
+{
+  "name": "webembeds",
+  "version": "0.0.1",
+  "author": "Girish Patil <devegpat@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "website:dev": "yarn workspace @webembeds/website dev",
+    "website:start": "yarn workspace @webembeds/website start",
+    "website:build": "yarn workspace @webembeds/website build",
+    "core:watch": "yarn workspace @webembeds/core watch",
+    "core:build": "yarn workspace @webembeds/core build"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  },
+  "engines": {
+    "node": "12.x"
+  }
+}

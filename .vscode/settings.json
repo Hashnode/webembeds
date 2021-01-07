@@ -1,0 +1,5 @@
+{
+  "eslint.format.enable": true,
+  "eslint.debug": true,
+  "eslint.packageManager": "yarn"
+}
