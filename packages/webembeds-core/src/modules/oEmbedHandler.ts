@@ -26,7 +26,7 @@ const processData = (url: string, data: any) => {
 
   const platformHandler = new PlatformHandler(url, { htmlNode: $ });
 
-  return platformHandler.generateEmbed();
+  return platformHandler.generate();
 };
 
 const oEmbedHandler = async (url: string, opts: object = {}): Promise<OEmbedResponseType> => {
