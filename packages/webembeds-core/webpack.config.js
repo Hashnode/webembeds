@@ -16,11 +16,14 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
   },
+  target: "node",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "build"),
     libraryTarget: "umd", // very important line
     umdNamedDefine: true, // very important line
     globalObject: "this",
+    library: "webembed",
   },
+  externals: ["axios", "cheerio"],
 };

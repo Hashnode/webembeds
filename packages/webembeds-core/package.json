@@ -18,6 +18,9 @@
     "webpack-cli": "^4.3.1"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "@types/axios": "^0.14.0",
+    "@types/cheerio": "^0.22.23",
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.5"
   }
 }

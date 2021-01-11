@@ -1,18 +1,17 @@
-/* eslint-disable import/no-unresolved */
-const handleOEmbed = require("./modules/oEmbedHandler");
-const { parseURL } = require("./utils/url");
+const handleOEmbed = require("./modules/oEmbedHandler.ts").default;
+const { parseURL } = require("./utils/url.ts");
 
 type Options = {
-  oEmbed?: Boolean,
+  oEmbed?: Boolean | false,
 }
 
-function init(incomingURL: string, opts: Options) {
+function init(incomingURL: string, opts: Options = {}): void {
   const { oEmbed, ...remainingOpts } = opts;
 
   const parsedURL = parseURL(incomingURL);
 
   if (oEmbed) {
-    return handleOEmbed(parsedURL.embedURL, { 
+    return handleOEmbed(incomingURL, {
       queryParams: parsedURL.queryParams,
       ...remainingOpts,
     });

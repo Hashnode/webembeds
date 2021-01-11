@@ -1,7 +1,12 @@
+const cheerio = require("cheerio");
+const RequestHandler = require("../utils/requestHandler.ts");
+const PlatformHandler = require("./PlatformHandler.ts");
+
 /* eslint-disable camelcase */
 type OEmbedResponseType = {
   type: "photo" | "video" | "link" | "rich",
-  version: "0.1",
+  version: 0.1,
+  title: string,
   author_name?: string,
   author_url?: string,
   provider_name?: string,
@@ -16,13 +21,29 @@ type OEmbedResponseType = {
   thumbnail_height?: string,
 };
 
-const oEmbedHandler = (url: string, opts: object): OEmbedResponseType => {
-  const ver = "0.1";
+const processData = (url: string, data: any) => {
+  const $ = cheerio.load(data);
+
+  const platformHandler = new PlatformHandler(url, { htmlNode: $ });
+
+  return platformHandler.generateEmbed();
+};
+
+const oEmbedHandler = async (url: string, opts: object = {}): Promise<OEmbedResponseType> => {
+  const request = new RequestHandler(url, opts);
+
+  const response = await request.makeRequest();
+
+  if (!response.hasError) {
+    const data = await processData(url, response.data);
+    return data;
+  }
 
   return {
     type: "video",
-    version: ver,
+    title: "",
+    version: 0.1,
   };
 };
 
-module.exports = oEmbedHandler;
+export default oEmbedHandler;
