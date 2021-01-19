@@ -1,6 +1,7 @@
+const UrlParse = require("url-parse");
+
 const { makeRequest } = require("../utils/requestHandler.ts");
 const { wrapHTML } = require("../utils/html.utils.ts");
-const { extractQueryParams } = require("../utils/url.ts");
 
 class Platform {
   url: string;
@@ -28,7 +29,8 @@ class Platform {
     this.embedURL = embedURL;
     this.details = platformDetails;
     this.oEmbedAvailable = oEmbedAvailable;
-    this.queryParams = extractQueryParams(this.embedURL);
+    const url = new UrlParse(this.embedURL);
+    this.queryParams = url.query;
   }
 
   makeRequest = async () => {
