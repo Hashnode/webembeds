@@ -16,11 +16,12 @@ type CustomResponse = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse<CustomResponse>) {
   const { url = "" }: EmbedRequest = req.query;
   const embedURL = decodeURIComponent(url);
-  console.log("url", embedURL);
-  res.setHeader("Content-Type", "application/json");
+  // res.setHeader("Content-Type", "application/json");
+  res.setHeader("Content-Type", "text/html");
   const embedResponse = await webembed(embedURL, { oEmbed: true });
-  res.json({
-    data: JSON.stringify(embedResponse),
-    error: false,
-  });
+  res.send(embedResponse.oEmbed.html);
+  // res.json({
+  //   data: embedResponse,
+  //   error: false,
+  // });
 }

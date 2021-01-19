@@ -1,26 +1,36 @@
-import React from "react";
-import { GetServerSideProps } from "next";
+/* eslint-disable no-console */
+import React, { useRef, useState } from "react";
 import axios from "axios";
 
-interface Props {}
+function Index() {
+  const urlRef = useRef<HTMLInputElement>(null);
+  const [isEmbedVisible, setEmbedVisible] = useState(false);
+  const [embedData, setEmbedData] = useState({} as any);
 
-function Index(props: Props) {
-  const { embedData }: { embedData: { html?: "" } } = props;
+  const onSubmit = () => {
+    const url = urlRef?.current?.value || "";
+
+    axios.get(`/api/embed/?url=${encodeURIComponent(url)}`)
+      .then((res) => {
+        console.log(res);
+        setEmbedVisible(true);
+        setEmbedData(res.data.data.oEmbed);
+      })
+      .catch(console.log);
+  };
 
   return (
-    <div dangerouslySetInnerHTML={{ __html: embedData ? embedData.html : "" }} />
+    <>
+      <form onSubmit={(e) => e.preventDefault()}>
+      <input ref={urlRef} type="url" style={{ width: "1000px" }}/>
+      <button type="button" onClick={onSubmit}>Submit</button>
+      {
+        isEmbedVisible
+        && <div dangerouslySetInnerHTML={{ __html: embedData ? embedData.html : "" }} />
+      }
+      </form>
+    </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { query } = context;
-  const response = await axios.get(`http://localhost:3000/api/embed?url=${query.url}`);
-  console.log(response);
-  return {
-    props: {
-      embedData: JSON.parse(response.data.data),
-    },
-  };
-};
 
 export default Index;

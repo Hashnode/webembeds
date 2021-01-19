@@ -6,33 +6,12 @@ type RequestResponseType = {
   data?: {}
 }
 
-class RequestHandler {
-  url: string
-
-  options: {}
-
-  response?: any
-
-  error?: any
-
-  events = []
-
-  constructor(url: string, opts: any) {
-    this.url = url;
-    this.options = opts;
+exports.makeRequest = async (url: string, options: {}): Promise<RequestResponseType> => {
+  try {
+    const response = await axios.get(url, options);
+    return { hasError: false, data: response?.data };
+  } catch (error) {
+    console.log("Request error", !!error);
+    return { message: "Error making request to endpoint", data: {} };
   }
-
-  makeRequest = async (): Promise<RequestResponseType> => {
-    try {
-      const response = await axios.get(this.url, this.options);
-      this.response = response;
-      return { hasError: false, data: this.response?.data };
-    } catch (error) {
-      console.log(error);
-      this.error = error;
-      return { message: "Error making request to endpoint", data: {} };
-    }
-  }
-}
-
-module.exports = RequestHandler;
+};

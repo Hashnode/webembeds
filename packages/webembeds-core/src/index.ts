@@ -1,23 +1,25 @@
-const handleOEmbed = require("./modules/oEmbedHandler.ts").default;
-const { parseURL } = require("./utils/url.ts");
+const WebembedHandler = require("./modules/WebembedHandler.ts");
+// const handleOEmbed = require("./modules/oEmbedHandler.ts").default;
+// const { parseURL } = require("./utils/url.ts");
 
 type Options = {
   oEmbed?: Boolean | false,
 }
 
-function init(incomingURL: string, opts: Options = {}): void {
-  const { oEmbed, ...remainingOpts } = opts;
+async function init(incomingURL: string, opts: Options = {}) {
+  // const { oEmbed, ...remainingOpts } = opts;
+  const handler = new WebembedHandler(incomingURL, opts);
 
-  const parsedURL = parseURL(incomingURL);
+  await handler.run();
 
-  if (oEmbed) {
-    return handleOEmbed(incomingURL, {
-      queryParams: parsedURL.queryParams,
-      ...remainingOpts,
-    });
-  }
+  return handler.generateResponse();
 
-  return parsedURL;
+  // if (oEmbed) {
+  //   return handleOEmbed(incomingURL, {
+  //     queryParams: parsedURL.queryParams,
+  //     ...remainingOpts,
+  //   });
+  // }
 }
 
 module.exports = init;

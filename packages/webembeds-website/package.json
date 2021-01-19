@@ -4,12 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "next",
+    "dev": "next -p 3001",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "@webembeds/core": "0.0.1",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "next": "^10.0.4",
     "react": "^17.0.1",

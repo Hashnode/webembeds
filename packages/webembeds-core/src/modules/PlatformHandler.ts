@@ -1,83 +1,62 @@
-const templates = require("../templates/index.ts");
-const { extractMetaTags } = require("../utils/common.ts");
-
-interface MetaTagType {
-  name: string,
-  property: string,
-  type: "meta"
-}
-
-/* eslint-disable camelcase */
-type OEmbedResponseType = {
-  type: "photo" | "video" | "link" | "rich",
-  version: 0.1,
-  title: string,
-  author_name?: string,
-  author_url?: string,
-  provider_name?: string,
-  provider_url?: string,
-  cache_age?: number,
-  thumbnail_url?: string,
-  // The width of the optional thumbnail.
-  // If this parameter is present, thumbnail_url and thumbnail_height must also be present.
-  thumbnail_width?: string,
-  // The height of the optional thumbnail.
-  // If this parameter is present, thumbnail_url and thumbnail_width must also be present.
-  thumbnail_height?: string,
-};
-
-// eslint-disable-next-line no-unused-vars
-type GenerateOEmbedOutputFuncType = (x: []) => OEmbedResponseType;
-
-interface PlatformType {
-  generateOEmbedOutput: GenerateOEmbedOutputFuncType;
-  allowedPatterns: [],
-  matches: any
-  generate: any
-}
+const oEmbedProviders = require("../utils/providers/oembed.providers.js");
+const Platform = require("./Platform.ts");
 
 class PlatformHandler {
-  url: string;
+  embedURL: string;
 
-  htmlNode: Element;
+  excludeOEmbed: boolean | true;
 
-  extractors: {} | null;
+  matchedPlatform: {} | null = null;
 
-  constructor(url: string, opts: { extractors: {} | null, htmlNode: Element }) {
-    this.url = url;
-    this.extractors = opts.extractors || null;
-    this.htmlNode = opts.htmlNode;
+  providerDetails = {};
+
+  queryParams: any = {};
+
+  constructor(embedURL: string, opts: {
+    excludeOEmbed: boolean | true,
+    queryParams?: {}
+  }) {
+    this.embedURL = embedURL;
+    this.excludeOEmbed = opts.excludeOEmbed;
+    this.queryParams = opts.queryParams;
   }
 
-  detectPlatform = (): PlatformType | null => {
-    let platform = null;
-    Object.keys(templates).forEach((key: string) => {
-      if (templates[key].matches(this.url)) {
-        platform = templates[key];
-      }
+  detectPlatform = () => {
+    let destinationPlatform: { endpoints: any; } | null = null;
+    let targetURL = null;
+    let oEmbedAvailable = false;
+    let found = false;
+
+    oEmbedProviders.forEach((platform: { endpoints: any[]; }) => {
+      platform.endpoints.forEach((endpoint) => {
+        if (endpoint.schemes && endpoint.schemes.length > 0) {
+          endpoint.schemes.forEach((scheme: string) => {
+            // eslint-disable-next-line no-useless-escape
+            if (this.embedURL.match(scheme.replace(/\*/g, ".*").replace(/\//g, "\/").replace(/\//g, "\\/"))) {
+              destinationPlatform = platform;
+              targetURL = endpoint.url;
+              oEmbedAvailable = true;
+              found = true;
+            }
+          });
+        } else if (endpoint.url.match(this.embedURL)) {
+          // If there are no schemes Ex. https://www.beautiful.ai/
+          // Consider the url to be the targetURL
+          destinationPlatform = platform;
+          targetURL = endpoint.url;
+          oEmbedAvailable = true;
+          found = true;
+        }
+      });
     });
-    return platform;
-  }
 
-  generate = (): OEmbedResponseType | null => {
-    const metaTags = extractMetaTags(this.htmlNode);
+    this.matchedPlatform = found ? {
+      platformDetails: destinationPlatform,
+      targetURL,
+      oEmbedAvailable,
+    } : null;
 
-    const filteredMetaTags = metaTags.filter((tag: MetaTagType) => {
-      if (tag && tag.property && tag.property.match(/[og:].*/)) {
-        return tag;
-      }
-      return false;
-    });
-
-    const reformedTags: any = {};
-    filteredMetaTags.forEach((tag: MetaTagType) => {
-      const { property, ...remaining } = tag;
-      reformedTags[property.replace("og:", "")] = remaining;
-    });
-
-    const platform = this.detectPlatform();
-
-    return platform ? platform.generateOEmbedOutput(reformedTags) : null;
+    return found ? new Platform(this.matchedPlatform, this.embedURL) : null;
   }
 }
 
