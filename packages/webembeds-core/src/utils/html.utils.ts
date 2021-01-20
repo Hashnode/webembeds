@@ -82,8 +82,6 @@ exports.wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrributes) =>
   let $ = cheerio.load(htmlContent);
   let iframe = $("iframe");
 
-  console.log("iframe", iframe.length);
-
   const iframeExists = iframe.length > 0;
 
   // const { width, height } = attribs;

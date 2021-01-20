@@ -1,16 +1,13 @@
 const UrlParse = require("url-parse");
-
+const cheerio = require("cheerio");
 const { makeRequest } = require("../utils/requestHandler.ts");
-const { wrapHTML } = require("../utils/html.utils.ts");
 
 class Platform {
   url: string;
 
-  details: {};
+  provider: {};
 
   embedURL: string;
-
-  oEmbedAvailable: boolean;
 
   response: { html?: {} | null } = { html: null };
 
@@ -18,36 +15,29 @@ class Platform {
 
   queryParams: {} = {};
 
-  constructor(matchedPlatform: {
-      platformDetails: any,
-      targetURL: any,
-      oEmbedAvailable: any,
-    }, embedURL: string) {
-    const { platformDetails, targetURL, oEmbedAvailable } = matchedPlatform;
+  cheerio: any;
 
+  constructor({ provider, targetURL }: { provider: any, targetURL: any, }, embedURL: string) {
     this.url = targetURL;
     this.embedURL = embedURL;
-    this.details = platformDetails;
-    this.oEmbedAvailable = oEmbedAvailable;
+    this.provider = provider;
     const url = new UrlParse(this.embedURL);
     this.queryParams = url.query;
+    this.cheerio = cheerio;
   }
 
   makeRequest = async () => {
-    console.log(`${this.url}?url=${encodeURIComponent(this.embedURL)}`);
-    const response = await makeRequest(`${this.url}?url=${this.embedURL}`);
+    const response = await makeRequest(`${this.url}?url=${this.embedURL}&format=json`);
     this.response = response.data;
   }
 
-  generateOEmbed = () => {
-    const updatedHTML = wrapHTML(this.response.html, {
-      targetURL: this.url,
-      embedURL: this.embedURL,
-      queryParams: this.queryParams,
-    });
-    this.response.html = updatedHTML;
+  // Generate a common fallback here by scraping for the common metadata from the platform
+  generateFallback = async () => (1);
+
+  generateOutput = async () => {
+    await this.makeRequest();
     return this.response;
-  };
+  }
 }
 
 module.exports = Platform;

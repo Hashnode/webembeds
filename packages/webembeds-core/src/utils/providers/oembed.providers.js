@@ -1,4 +1,8 @@
-module.exports = [
+const {
+  GithubGist,
+} = require("./index");
+
+const oEmbedProviders = [
   {
     provider_name: "23HQ",
     provider_url: "http://www.23hq.com",
@@ -3767,3 +3771,21 @@ module.exports = [
     ],
   },
 ];
+
+const customProviders = [
+  {
+    provider_name: "Github gist",
+    provider_url: "https://github.com",
+    custom: true,
+    customClass: GithubGist,
+    endpoints: [
+      {
+        schemes: [
+          "https://gist.github.com/*",
+        ],
+      },
+    ],
+  },
+];
+
+module.exports = [...oEmbedProviders, ...customProviders];

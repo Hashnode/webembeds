@@ -1,4 +1,5 @@
-const PlatformHandler = require("./PlatformHandler.ts");
+const oEmbedProviders = require("../utils/providers/oembed.providers.js");
+const Platform = require("./Platform.ts");
 
 /**
  * Request structure
@@ -45,36 +46,87 @@ module.exports = class WebembedHandler {
 
   platform: any = {};
 
+  platformDetails: {} | null = null;
+
+  matchedPlatform: {} | null = null;
+
   constructor(incomingURL: string, { oEmbed = true }: { oEmbed: boolean }) {
     this.embedURL = incomingURL;
     this.excludeOEmbed = oEmbed;
   }
 
-  run = async () => {
-    const platformHandler = new PlatformHandler(this.embedURL, {
-      excludeOEmbed: this.excludeOEmbed,
+  detectPlatform = () => {
+    let destinationProvider: { endpoints: any; } | null = null;
+    let targetURL = null;
+    let found = false;
+
+    oEmbedProviders.forEach((provider: { endpoints: any[]; }) => {
+      provider.endpoints.forEach((endpoint) => {
+        if (endpoint.schemes && endpoint.schemes.length > 0) {
+          endpoint.schemes.forEach((scheme: string) => {
+            // eslint-disable-next-line no-useless-escape
+            if (this.embedURL.match(scheme.replace(/\*/g, ".*").replace(/\//g, "\/").replace(/\//g, "\\/"))) {
+              destinationProvider = provider;
+              targetURL = endpoint.url;
+              found = true;
+            }
+          });
+        } else if (endpoint.url.match(this.embedURL)) {
+          // If there are no schemes Ex. https://www.beautiful.ai/
+          // Consider the url to be the targetURL
+          destinationProvider = provider;
+          targetURL = endpoint.url;
+          found = true;
+        }
+      });
     });
 
-    // ex. youtube, twitter, etc.
-    this.platform = platformHandler.detectPlatform();
-
-    if (!this.platform) {
-      // eslint-disable-next-line no-console
-      console.log("---- Platform not supported ----");
-      return;
+    // If not among ones we support, return null
+    if (!found) {
+      return null;
     }
 
-    await this.platform.makeRequest();
+    return {
+      provider: destinationProvider,
+      targetURL,
+    };
   }
 
-  generateResponse = (): { oEmbed?: OEmbedResponseType, error?: boolean } => {
-    if (this.platform) {
+  run = async () => {
+    // ex. youtube, twitter, etc.
+    const platformDetails = this.detectPlatform();
+    console.log(platformDetails);
+    // If not supported
+    if (!platformDetails) {
+      this.platform = new Platform(null, this.embedURL);
+    } else {
+      const { provider = {}, targetURL }: { provider: {
+        custom? : boolean,
+        customClass?: any,
+      } | null, targetURL: null } = platformDetails;
+
+      // If custom, create a new instance of customClass which extends Platform behind the scenes
+      if (provider && provider.custom) {
+        const CustomClass = provider.customClass;
+        this.platform = new CustomClass({ provider, targetURL }, this.embedURL);
+      } else {
+        // Else instantiate Platform and proceed
+        this.platform = new Platform({ provider, targetURL }, this.embedURL);
+      }
+    }
+
+    this.platformDetails = platformDetails;
+  }
+
+  generateResponse = async (): Promise<{ output?: OEmbedResponseType | null, error?: boolean }> => {
+    const output = await this.platform.generateOutput();
+    if (output) {
       return {
-        oEmbed: this.platform.generateOEmbed(),
+        output,
         error: false,
       };
     }
-    return { error: true };
+    return { output: null, error: true };
   }
 };
 
