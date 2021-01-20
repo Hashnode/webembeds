@@ -2535,8 +2535,10 @@ const oEmbedProviders = [
     endpoints: [
       {
         schemes: [
-          "http://embed.runkit.com/*,",
-          "https://embed.runkit.com/*,",
+          // "http://embed.runkit.com/*,",
+          // "https://embed.runkit.com/*,",
+          "https://runkit.com",
+          "http://runkit.com",
         ],
         url: "https://embed.runkit.com/oembed",
         formats: [

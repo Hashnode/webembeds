@@ -4,7 +4,7 @@ type APIResponse = {
   message?: null
 };
 
-exports.apiResponse = ({ data, message, error}: { data: {}, message: "", error: true }): APIResponse => ({
+exports.apiResponse = ({ data, message, error }: { data: {}, message: "", error: true }): APIResponse => ({
   data: data || null,
   message: message || null,
   error: error || true,
