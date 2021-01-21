@@ -65,7 +65,9 @@ module.exports = class WebembedHandler {
         if (endpoint.schemes && endpoint.schemes.length > 0) {
           endpoint.schemes.forEach((scheme: string) => {
             // eslint-disable-next-line no-useless-escape
+            console.log(this.embedURL.match(scheme.replace(/\*/g, ".*").replace(/\//g, "\/").replace(/\//g, "\\/")));
             if (this.embedURL.match(scheme.replace(/\*/g, ".*").replace(/\//g, "\/").replace(/\//g, "\\/"))) {
+              console.log(RegExp.$1, RegExp.$2);
               destinationProvider = provider;
               targetURL = endpoint.url;
               found = true;

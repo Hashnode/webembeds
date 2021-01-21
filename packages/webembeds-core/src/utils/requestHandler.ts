@@ -11,7 +11,7 @@ exports.makeRequest = async (url: string, options: {}): Promise<RequestResponseT
     const response = await axios.get(url, options);
     return { hasError: false, data: response?.data };
   } catch (error) {
-    console.log("Request error", error);
+    console.log("Request error", !!error);
     return { message: "Error making request to endpoint", data: {} };
   }
 };
