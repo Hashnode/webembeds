@@ -113,7 +113,6 @@ module.exports = class WebembedHandler {
     if (!provider || !targetURL) {
       return callback(true, null);
     }
-
     // This should fetch an oembed response
     if (provider && targetURL) {
       if (provider && provider.custom) {

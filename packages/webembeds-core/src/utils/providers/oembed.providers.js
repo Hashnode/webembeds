@@ -1,5 +1,6 @@
 const {
   GithubGist,
+  ExpoSnack,
 } = require("./index");
 
 const oEmbedProviders = [
@@ -3799,7 +3800,7 @@ const additionalOEmbedProviders = [
         url: "https://www.canva.com/design/*/view",
       },
     ],
-  },
+  }
 ];
 
 const customProviders = [
@@ -3814,6 +3815,20 @@ const customProviders = [
           "https://gist.github.com/*",
         ],
         url: "https://gist.github.com",
+      },
+    ],
+  },
+  {
+    provider_name: "Expo",
+    provider_url: "https://expo.io",
+    custom: true,
+    customClass: ExpoSnack,
+    endpoints: [
+      {
+        schemes: [
+          "https://snack.expo.io/*",
+        ],
+        url: "https://snack.expo.io",
       },
     ],
   },

@@ -9,16 +9,17 @@ const links = {
   spotify: "https://open.spotify.com/track/3G8o2zm7LaF6eeVuvLlrkJ?si=Sx1sCnhDT6GXqSLIwSLOeQ",
   gist: "https://gist.github.com/theevilhead/7ac2fbc3cda897ebd87dbe9aeac130d6",
   canva: "https://www.canva.com/design/DAET1m0_11c",
-  codepen: "https://codepen.io/bsehovac/pen/EMyWVv", // Cloudflare error
+  codepen: "https://codepen.io/bsehovac/pen/EMyWVv",
   youtube: "https://www.youtube.com/watch?v=32I0Qso4sDg",
   twitter: "https://twitter.com/fazlerocks/status/1352527059076059136",
   instagram: "https://www.instagram.com/p/CJ2ja7Tl3S5/",
   glitch: "https://glitch.com/edit/#!/remote-hands",
+  expo: "https://snack.expo.io/@girishhashnode/unnamed-snack",
 };
 
 (async function () {
   try {
-    const url = links.youtube;
+    const url = links.expo;
     const l = await webembed(url);
     console.log("Test Result ", l);
   } catch (error) {
