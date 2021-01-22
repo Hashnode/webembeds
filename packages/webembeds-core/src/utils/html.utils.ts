@@ -79,7 +79,7 @@ type CustomAtrributes = {
 }
 
 exports.wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrributes) => {
-  let $ = cheerio.load(htmlContent);
+  const $ = cheerio.load(htmlContent);
   let iframe = $("iframe");
 
   const iframeExists = iframe.length > 0;
@@ -98,22 +98,27 @@ exports.wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrributes) =>
   // };
   // iframe.attr(finalAttributesIframe);
 
-  if (!iframeExists) {
-    iframe = $.root().wrapInner("<iframe></iframe>");
-    iframe = $("iframe");
-  }
+  // if (!iframeExists) {
+  //   iframe = $.root().wrapInner("<iframe></iframe>");
+  //   iframe = $("iframe");
+  // }
 
   // return "";
   // // eslint-disable-next-line quotes
-  iframe.attr("style", "position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;");
-  iframe.attr("class", "webembed-iframe");
-  $("iframe").wrap("<div class=\"webembed-wrapper\" style=\"position: relative;overflow: hidden; padding-top: 56.25%;\"></div>");
 
-  const iframeContent = $("iframe").html();
-
-  if (!iframeExists) {
-    $("iframe").attr("srcdoc", iframeContent);
+  if (iframeExists) {
+    iframe.attr("width", "100%");
+    iframe.attr("height", "100%");
+    iframe.attr("style", "position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;");
+    iframe.attr("class", "webembed-iframe");
+    $("iframe").wrap("<div class=\"webembed-wrapper\" style=\"position: relative;overflow: hidden; padding-top: 56.25%;\"></div>");
   }
+
+  // const iframeContent = $("iframe").html();
+
+  // if (!iframeExists) {
+  //   $("iframe").attr("srcdoc", iframeContent);
+  // }
 
   return $.html();
 };

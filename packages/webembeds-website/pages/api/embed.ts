@@ -18,8 +18,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   res.setHeader("Content-Type", "application/json");
   // res.setHeader("Content-Type", "text/html");
   const embedResponse = await webembed(embedURL);
-  res.json({
-    data: embedResponse,
-    error: false,
-  });
+  res.json({ data: embedResponse });
 }

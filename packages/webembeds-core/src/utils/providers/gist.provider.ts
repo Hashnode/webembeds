@@ -3,11 +3,11 @@ const { wrapHTML } = require("../html.utils.ts");
 
 class GithubGist extends Platform {
   // eslint-disable-next-line no-useless-constructor
-  constructor(a: any, b: any) {
-    super(a, b);
+  constructor(args: {}) {
+    super(args);
   }
 
-  generateOutput = () => {
+  run = () => {
     console.log("Custom gist pull");
     const { cheerio } = this;
     const $ = cheerio.load("<script>");

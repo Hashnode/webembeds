@@ -3775,19 +3775,19 @@ const oEmbedProviders = [
 ];
 
 const additionalOEmbedProviders = [
-  // {
-  //   provider_name: "Anchor",
-  //   provider_url: "https://anchor.fm",
-  //   endpoints: [
-  //     {
-  //       schemes: [
-  //         "https://anchor.fm/*",
-  //       ],
-  //       url: "https://srv2.zoomable.ca/oembed",
-  //       discovery: true,
-  //     },
-  //   ],
-  // },
+  {
+    provider_name: "Anchor",
+    provider_url: "https://anchor.fm",
+    endpoints: [
+      {
+        schemes: [
+          "https://anchor.fm/*",
+        ],
+        url: "https://anchor.fm",
+        discovery: true,
+      },
+    ],
+  },
   {
     provider_name: "Canva",
     provider_url: "https://canva.com",
@@ -3813,6 +3813,7 @@ const customProviders = [
         schemes: [
           "https://gist.github.com/*",
         ],
+        url: "https://gist.github.com",
       },
     ],
   },
