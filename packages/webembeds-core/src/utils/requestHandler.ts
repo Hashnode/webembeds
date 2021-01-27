@@ -14,6 +14,12 @@ exports.makeRequest = async (url: string, options: { format: "json" | "xml" }): 
       params: {
         format: "json",
       },
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
+        Connection: "keep-alive",
+        Accept: "*/*",
+        "accept-encoding": "gzip, deflate, br",
+      },
     });
     return response;
   } catch (error) {

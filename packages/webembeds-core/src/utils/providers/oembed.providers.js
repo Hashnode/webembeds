@@ -1,6 +1,8 @@
 const {
   GithubGist,
   ExpoSnack,
+  Instagram,
+  Twitch,
 } = require("./index");
 
 const oEmbedProviders = [
@@ -1397,6 +1399,8 @@ const oEmbedProviders = [
   {
     provider_name: "Instagram",
     provider_url: "https://instagram.com",
+    custom: true,
+    customClass: Instagram,
     endpoints: [
       {
         schemes: [
@@ -1426,34 +1430,34 @@ const oEmbedProviders = [
           "json",
         ],
       },
-      {
-        schemes: [
-          "http://instagram.com/*/p/*,",
-          "http://www.instagram.com/*/p/*,",
-          "https://instagram.com/*/p/*,",
-          "https://www.instagram.com/*/p/*,",
-          "http://instagram.com/p/*",
-          "http://instagr.am/p/*",
-          "http://www.instagram.com/p/*",
-          "http://www.instagr.am/p/*",
-          "https://instagram.com/p/*",
-          "https://instagr.am/p/*",
-          "https://www.instagram.com/p/*",
-          "https://www.instagr.am/p/*",
-          "http://instagram.com/tv/*",
-          "http://instagr.am/tv/*",
-          "http://www.instagram.com/tv/*",
-          "http://www.instagr.am/tv/*",
-          "https://instagram.com/tv/*",
-          "https://instagr.am/tv/*",
-          "https://www.instagram.com/tv/*",
-          "https://www.instagr.am/tv/*",
-        ],
-        url: "https://graph.facebook.com/v8.0/instagram_oembed",
-        formats: [
-          "json",
-        ],
-      },
+      // {
+      //   schemes: [
+      //     "http://instagram.com/*/p/*,",
+      //     "http://www.instagram.com/*/p/*,",
+      //     "https://instagram.com/*/p/*,",
+      //     "https://www.instagram.com/*/p/*,",
+      //     "http://instagram.com/p/*",
+      //     "http://instagr.am/p/*",
+      //     "http://www.instagram.com/p/*",
+      //     "http://www.instagr.am/p/*",
+      //     "https://instagram.com/p/*",
+      //     "https://instagr.am/p/*",
+      //     "https://www.instagram.com/p/*",
+      //     "https://www.instagr.am/p/*",
+      //     "http://instagram.com/tv/*",
+      //     "http://instagr.am/tv/*",
+      //     "http://www.instagram.com/tv/*",
+      //     "http://www.instagr.am/tv/*",
+      //     "https://instagram.com/tv/*",
+      //     "https://instagr.am/tv/*",
+      //     "https://www.instagram.com/tv/*",
+      //     "https://www.instagr.am/tv/*",
+      //   ],
+      //   url: "https://graph.facebook.com/v8.0/instagram_oembed",
+      //   formats: [
+      //     "json",
+      //   ],
+      // },
     ],
   },
   {
@@ -3829,6 +3833,20 @@ const customProviders = [
           "https://snack.expo.io/*",
         ],
         url: "https://snack.expo.io",
+      },
+    ],
+  },
+  {
+    provider_name: "Twitch",
+    provider_url: "https://twitch.tv",
+    custom: true,
+    customClass: Twitch,
+    endpoints: [
+      {
+        schemes: [
+          "https://www.twitch.tv/*",
+        ],
+        url: "https://www.twitch.tv",
       },
     ],
   },

@@ -15,11 +15,12 @@ const links = {
   instagram: "https://www.instagram.com/p/CJ2ja7Tl3S5/",
   glitch: "https://glitch.com/edit/#!/remote-hands",
   expo: "https://snack.expo.io/@girishhashnode/unnamed-snack",
+  twitch: "https://www.twitch.tv/fresh",
 };
 
 (async function () {
   try {
-    const url = links.expo;
+    const url = links.twitch;
     const l = await webembed(url);
     console.log("Test Result ", l);
   } catch (error) {

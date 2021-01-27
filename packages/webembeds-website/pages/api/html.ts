@@ -16,6 +16,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.send(embedResponse.output.html);
   }
 
+  if (embedResponse.output.url) {
+    return res.send(embedResponse.output.url);
+  }
+
   if (embedResponse.output) {
     return res.send(embedResponse.output);
   }
