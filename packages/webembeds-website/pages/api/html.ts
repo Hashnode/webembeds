@@ -12,6 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   res.setHeader("Content-Type", "text/html");
   const embedResponse = await webembed(embedURL);
 
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   if (embedResponse.output.html) {
     return res.send(embedResponse.output.html);
   }
