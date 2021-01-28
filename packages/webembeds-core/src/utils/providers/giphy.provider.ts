@@ -7,14 +7,12 @@ class Giphy extends Platform {
     super(args);
   }
 
-  run = () => {
+  run = async () => {
     console.log("Custom Giphy pull");
     console.log(this.response.data);
-    return "sd";
-    // const { cheerio } = this;
-    // const $ = cheerio.load("<script>");
-    // $("script").attr("src", `${this.embedURL}.js`);
-    // return $.html();
+    const data = await super.run();
+    console.log("as", data);
+    return `<iframe src="${data}" />`;
   }
 }
 

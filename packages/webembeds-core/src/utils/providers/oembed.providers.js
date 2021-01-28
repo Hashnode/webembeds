@@ -3,6 +3,8 @@ const {
   ExpoSnack,
   Instagram,
   Twitch,
+  Glitch,
+  Giphy,
 } = require("./index");
 
 const oEmbedProviders = [
@@ -1136,21 +1138,6 @@ const oEmbedProviders = [
         schemes: [
           "https://www.gifnote.com/play/*",
         ],
-        discovery: true,
-      },
-    ],
-  },
-  {
-    provider_name: "GIPHY",
-    provider_url: "https://giphy.com",
-    endpoints: [
-      {
-        schemes: [
-          "https://giphy.com/gifs/*",
-          "http://gph.is/*",
-          "https://media.giphy.com/media/*/giphy.gif",
-        ],
-        url: "https://giphy.com/services/oembed",
         discovery: true,
       },
     ],
@@ -3847,6 +3834,37 @@ const customProviders = [
           "https://www.twitch.tv/*",
         ],
         url: "https://www.twitch.tv",
+      },
+    ],
+  },
+  {
+    provider_name: "Glitch",
+    provider_url: "https://glitch.com",
+    custom: true,
+    customClass: Glitch,
+    endpoints: [
+      {
+        schemes: [
+          "https://glitch.com/*",
+        ],
+        url: "https://glitch.com",
+      },
+    ],
+  },
+  {
+    provider_name: "GIPHY",
+    provider_url: "https://giphy.com",
+    custom: true,
+    customClass: Giphy,
+    endpoints: [
+      {
+        schemes: [
+          "https://giphy.com/gifs/*",
+          "http://gph.is/*",
+          "https://media.giphy.com/media/*/giphy.gif",
+        ],
+        url: "https://giphy.com/services/oembed",
+        discovery: true,
       },
     ],
   },

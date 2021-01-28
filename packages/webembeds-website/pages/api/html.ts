@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   if (embedResponse.output.url) {
-    return res.send(embedResponse.output.url);
+    return res.send(`<iframe src="${embedResponse.output.url}"/>`);
   }
 
   if (embedResponse.output) {

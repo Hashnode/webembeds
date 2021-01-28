@@ -16,11 +16,13 @@ const links = {
   glitch: "https://glitch.com/edit/#!/remote-hands",
   expo: "https://snack.expo.io/@girishhashnode/unnamed-snack",
   twitch: "https://www.twitch.tv/fresh",
+  giphy: "https://giphy.com/gifs/cbsnews-inauguration-2021-XEMbxm9vl9JIIMcE7M",
+  // glitch: "https://glitch.com/edit/#!/remote-hands?path=README.md%3A1%3A0",
 };
 
 (async function () {
   try {
-    const url = links.twitch;
+    const url = links.giphy;
     const l = await webembed(url);
     console.log("Test Result ", l);
   } catch (error) {
