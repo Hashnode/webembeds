@@ -19,11 +19,17 @@ const links = {
   giphy: "https://giphy.com/gifs/cbsnews-inauguration-2021-XEMbxm9vl9JIIMcE7M",
   // glitch: "https://glitch.com/edit/#!/remote-hands?path=README.md%3A1%3A0",
   metascraper: "https://metascraper.js.org/",
+  runkit: "https://runkit.com/runkit/welcome",
+  repl: "https://repl.it/@GirishPatil4/AdvancedRespectfulGigahertz",
+  soundcloud: "https://soundcloud.com/hit-jatt/jatt-disde-arjan-dhillon",
+  anchor: "https://anchor.fm/startapodcast/episodes/Whats-your-podcast-about-e17krq/a-a2q3ft",
+  loom: "https://www.loom.com/share/0281766fa2d04bb788eaf19e65135184",
+  vimeo: "https://vimeo.com/124283821",
 };
 
 (async function () {
   try {
-    const url = links.twitter;
+    const url = links.vimeo;
     const l = await webembed.default(url);
     console.log("Test Result ", l);
   } catch (error) {

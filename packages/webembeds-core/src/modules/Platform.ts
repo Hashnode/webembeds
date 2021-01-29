@@ -66,7 +66,7 @@ class Platform {
       return {
         version: 0.1,
         type: "rich",
-        title: "Twitch",
+        title: "WebEmbed",
         html,
       };
     }
