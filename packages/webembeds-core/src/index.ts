@@ -1,13 +1,13 @@
-const WebembedHandler = require("./modules/WebembedHandler.ts");
+import WebembedHandler from "./modules/WebembedHandler";
 
-type Options = {
-  oEmbed?: Boolean | false,
-}
+// type Options = {
+//   oEmbed?: Boolean | false,
+// }
 
-async function init(incomingURL: string, opts: Options = {}) {
-  const handler = new WebembedHandler(incomingURL, opts);
+async function init(incomingURL: string) {
+  const handler = new WebembedHandler(incomingURL);
 
   return handler.generateResponse();
 }
 
-module.exports = init;
+export default init;

@@ -1,11 +1,9 @@
-const {
-  GithubGist,
-  ExpoSnack,
-  Instagram,
-  Twitch,
-  Glitch,
-  Giphy,
-} = require("./index");
+import GithubGist from "./gist.provider";
+import ExpoSnack from "./expo.provider";
+import Giphy from "./giphy.provider";
+import Instagram from "./instagram.provider";
+import Twitch from "./twitch.provider";
+import Glitch from "./glitch.provider";
 
 const oEmbedProviders = [
   {
@@ -3870,4 +3868,4 @@ const customProviders = [
   },
 ];
 
-module.exports = [...oEmbedProviders, ...additionalOEmbedProviders, ...customProviders];
+export default [...oEmbedProviders, ...additionalOEmbedProviders, ...customProviders];

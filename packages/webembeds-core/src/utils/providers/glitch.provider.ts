@@ -1,9 +1,8 @@
-const Platform = require("../../modules/Platform.ts");
-const { wrapHTML } = require("../html.utils.ts");
+import Platform, { OEmbedResponseType, PlatformType } from "../../modules/Platform";
 
-class Glitch extends Platform {
+export default class Glitch extends Platform {
   // eslint-disable-next-line no-useless-constructor
-  constructor(args: {}) {
+  constructor(args: PlatformType) {
     super(args);
   }
 
@@ -17,11 +16,13 @@ class Glitch extends Platform {
   // https://glitch.com/embed/#!/embed/remote-hands?path=README.md&previewSize=100
   // https://glitch.com/edit/#!/remote-hands?path=README.md%3A1%3A0
   // https://glitch.com/embed/#!/embed/remote-hands?previewSize=100&previewFirst=true&sidebarCollapsed=true
-  run = (): string | null => {
+  run = async (): Promise<OEmbedResponseType> => {
     console.log(this.embedURL.replace("/edit/", "/embed/#!/embed/"));
-    return `<iframe src="${this.embedURL.replace("/edit/", "/embed/#!/embed/")}" />`;
+    return {
+      version: 0.1,
+      type: "rich",
+      title: "Glitch",
+      html: `<iframe src="${this.embedURL.replace("/edit/", "/embed/#!/embed/")}" />`,
+    };
   }
 }
-
-module.exports = Glitch;
-export {};

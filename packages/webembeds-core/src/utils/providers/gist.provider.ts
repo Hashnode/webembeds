@@ -1,20 +1,22 @@
-const Platform = require("../../modules/Platform.ts");
-const { wrapHTML } = require("../html.utils.ts");
+import Platform, { OEmbedResponseType, PlatformType } from "../../modules/Platform";
 
-class GithubGist extends Platform {
+export default class GithubGist extends Platform {
   // eslint-disable-next-line no-useless-constructor
-  constructor(args: {}) {
+  constructor(args: PlatformType) {
     super(args);
   }
 
-  run = () => {
+  run = async (): Promise<OEmbedResponseType> => {
     console.log("Custom gist pull");
     const { cheerio } = this;
     const $ = cheerio.load("<script>");
     $("script").attr("src", `${this.embedURL}.js`);
-    return $.html();
+
+    return {
+      version: 0.1,
+      type: "rich",
+      title: "Github Gist",
+      html: $.html(),
+    };
   }
 }
-
-module.exports = GithubGist;
-export {};

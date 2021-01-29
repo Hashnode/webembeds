@@ -1,4 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
+import { info as FastImage } from "fastimage";
+import urlMetaData, { Result } from "url-metadata";
 
 // type RequestResponseType = {
 //   hasError?: boolean | true,
@@ -6,9 +8,17 @@ const axios = require("axios");
 //   data?: {}
 // }
 
-type RequestResponseType = {} | null;
+type RequestResponseType = {
+  data: {
+    html: string,
+  }
+} | null;
 
-exports.makeRequest = async (url: string, options: { format: "json" | "xml" }): Promise<RequestResponseType> => {
+export type {
+  RequestResponseType,
+};
+
+export const makeRequest = async (url: string): Promise<RequestResponseType> => {
   try {
     const response = await axios.get(url, {
       params: {
@@ -23,7 +33,37 @@ exports.makeRequest = async (url: string, options: { format: "json" | "xml" }): 
     });
     return response;
   } catch (error) {
-    console.log("Request error", !!error);
+    console.log("Request error", error);
     return null;
   }
+};
+
+// eslint-disable-next-line max-len
+export const getMetaData = (url: string): Promise<Result> => {
+  return new Promise((resolve, reject) => {
+    urlMetaData(url).then(
+      (metadata: urlMetaData.Result) => { // success handler
+        console.log(metadata);
+        // if (!metadata["og:image:width"] || !metadata["og:image:height"]) {
+          // FastImage(metadata["og:image"], (error: any, imageData: any): any => {
+          //   if (error) {
+          //     console.log(error);
+          //     return resolve(metadata);
+          //   }
+          //   const newMetaData = metadata;
+          //   if (imageData) {
+          //     newMetaData["og:image:width"] = imageData.width;
+          //     newMetaData["og:image:height"] = imageData.height;
+          //   }
+          //   return resolve(newMetaData);
+          // });
+        // }
+        resolve(metadata);
+      },
+      (error) => { // failure handler
+        console.log(error);
+        reject(error);
+      },
+    );
+  })
 };

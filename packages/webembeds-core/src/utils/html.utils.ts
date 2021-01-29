@@ -1,4 +1,6 @@
-const cheerio = require("cheerio");
+/* eslint-disable no-tabs */
+import urlMetadata from "url-metadata";
+import cheerio from "cheerio";
 
 // interface MetaTagType {
 //   name: string,
@@ -7,9 +9,9 @@ const cheerio = require("cheerio");
 // }
 
 const nodeToObject = (allNodes: [any]) => {
-  const allTags = [];
-
+  const allTags: any = [];
   let i = 0;
+
   do {
     let currentNode = allNodes[i];
     const temp = {} as any;
@@ -19,7 +21,10 @@ const nodeToObject = (allNodes: [any]) => {
     temp.type = currentNode.type;
     temp.name = currentNode.name;
     temp.namespace = currentNode.namespace;
-    allTags.push(temp);
+
+    if (temp) {
+      allTags.push(temp);
+    }
 
     i += 1;
     if (allNodes[i]) {
@@ -32,23 +37,19 @@ const nodeToObject = (allNodes: [any]) => {
   return allTags;
 };
 
-exports.nodeToObject = nodeToObject;
-
 // eslint-disable-next-line no-unused-vars
-const extractMetaTags = ($: any) => {
+export const extractMetaTags = ($: any) => {
   const metaTags = $.html($("meta")).toArray();
   return nodeToObject(metaTags);
 };
 
-exports.extractMetaTags = extractMetaTags;
-
 // eslint-disable-next-line no-unused-vars
-const extractLinkTags = ($: any) => {
+export const extractLinkTags = ($: any) => {
   const linkTags = $($.html($("link"))).toArray();
   return nodeToObject(linkTags);
 };
 
-// exports.extractOEmbedContent = (metaTags: []): {
+// export const extractOEmbedContent = (metaTags: []): {
 //   oEmbed: {}, custom: {}
 // } => {
 //   const filteredMetaTags = metaTags.filter((tag: MetaTagType) => {
@@ -73,14 +74,14 @@ const extractLinkTags = ($: any) => {
 // };
 
 type CustomAtrributes = {
-  height?: number,
-  width?: number,
-  className?: string
-}
+	height?: number;
+	width?: number;
+	className?: string;
+};
 
-exports.wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrributes) => {
+export const wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrributes) => {
   const $ = cheerio.load(htmlContent);
-  let iframe = $("iframe");
+  const iframe = $("iframe");
 
   const iframeExists = iframe.length > 0;
 
@@ -111,7 +112,9 @@ exports.wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrributes) =>
     iframe.attr("height", "100%");
     iframe.attr("style", "position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;");
     iframe.attr("class", "webembed-iframe");
-    $("iframe").wrap("<div class=\"webembed-wrapper\" style=\"position: relative;overflow: hidden; padding-top: 56.25%;\"></div>");
+    $("iframe").wrap(
+      "<div class=\"webembed-wrapper\" style=\"position: relative;overflow: hidden; padding-top: 56.25%;\"></div>",
+    );
   }
 
   // const iframeContent = $("iframe").html();
@@ -122,3 +125,104 @@ exports.wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrributes) =>
 
   return $.html();
 };
+
+export const wrapFallbackHTML = (data: urlMetadata.Result) => `<html lang="en">
+	<head></head>
+	<body
+		onload="parent.adjustIframeSize('gist-1611837122830', document.body.scrollHeight)"
+		data-new-gr-c-s-check-loaded="14.993.0"
+		data-gr-ext-installed=""
+	>
+		<style>
+			body,
+			html {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+					'Helvetica Neue', sans-serif;
+			}
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			.link-card {
+				width: 100%;
+				background: #eee;
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: horizontal;
+				-webkit-box-direction: normal;
+				-ms-flex-direction: row;
+				flex-direction: row;
+				border-radius: 4px;
+				border: 1px solid #ddd;
+				overflow: hidden;
+				text-decoration: none;
+			}
+			.link-card .link-content {
+				padding: 12px;
+				width: calc(100% - 300px);
+			}
+			.link-card .link-content .big-text {
+				display: block;
+				font-size: 22px;
+				font-weight: 600;
+				color: #212121;
+				margin-bottom: 8px;
+			}
+			.link-card .link-content .small-desc {
+				font-size: 16px;
+				color: #454545;
+				display: block;
+				margin-bottom: 8px;
+			}
+			.link-card .link-content .small-desc.host-name {
+				color: #999;
+			}
+			.link-card .link-image {
+				display: block;
+				width: 300px;
+				height: 158px;
+				background-color: #fefefe;
+				background-size: cover;
+				background-position: center center;
+			}
+			@media (max-width: 768px) {
+				.link-card {
+					-ms-flex-wrap: wrap;
+					flex-wrap: wrap;
+				}
+				.link-card .link-image {
+					width: 100%;
+					height: 250px;
+				}
+				.link-card .link-content {
+					width: 100%;
+				}
+			}
+			@media (max-width: 425px) {
+				.link-card .link-image {
+					width: 100%;
+					height: 255px;
+				}
+			}
+		</style>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<title>${data["og:title"]}</title>
+
+		<a href="${data["og:url"]}" target="_blank" class="link-card">
+			<div
+				class="link-image"
+				style="
+					background-image: url('${data["og:image"]}');
+				"
+			></div>
+			<div class="link-content">
+				<span class="big-text">${data["og:title"]}</span>
+				<span class="small-desc">${data["og:description"]}</span>
+				<span class="small-desc host-name">${data["og:url"]}</span>
+			</div>
+		</a>
+	</body>
+</html>
+`;

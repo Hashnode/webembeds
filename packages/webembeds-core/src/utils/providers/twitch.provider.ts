@@ -1,13 +1,9 @@
-const Platform = require("../../modules/Platform.ts");
-const { wrapHTML } = require("../html.utils.ts");
+import Platform, { OEmbedResponseType } from "../../modules/Platform";
 
-class Twitch extends Platform {
+export default class Twitch extends Platform {
   // eslint-disable-next-line no-useless-constructor
-  constructor(args: {}) {
-    super(args);
-  }
 
-  run = (): string | null => {
+  run = async (): Promise<OEmbedResponseType> => {
     try {
       const url = new URL(this.embedURL);
       let href = "https://player.twitch.tv/?autoplay=false&parent=localhost";
@@ -31,13 +27,15 @@ class Twitch extends Platform {
         href += `&channel=${channelName}`;
       }
 
-      return `<iframe src="${href}" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620" allow="encrypted-media"></iframe>
-      `;
+      return {
+        version: 0.1,
+        type: "rich",
+        title: "Twitch",
+        html: `<iframe src="${href}" frameborder="0" allowfullscreen="true" 
+        scrolling="no" height="378" width="620" allow="encrypted-media"></iframe>`,
+      };
     } catch (error) {
       return null;
     }
   }
 }
-
-module.exports = Twitch;
-export {};

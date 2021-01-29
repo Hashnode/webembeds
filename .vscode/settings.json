@@ -3,6 +3,7 @@
   "eslint.debug": true,
   "eslint.packageManager": "yarn",
   "cSpell.words": [
-    "Giphy"
+    "Giphy",
+    "fastimage"
   ]
 }

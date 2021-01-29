@@ -1,6 +1,6 @@
-const cheerio = require("cheerio");
-const { makeRequest } = require("../utils/requestHandler.ts");
-const { wrapHTML } = require("../utils/html.utils");
+import cheerio from "cheerio";
+import { makeRequest, RequestResponseType } from "../utils/requestHandler";
+import { wrapHTML } from "../utils/html.utils";
 
 /* eslint-disable camelcase */
 // eslint-disable-next-line no-unused-vars
@@ -25,9 +25,14 @@ type OEmbedResponseType = {
 
 type PlatformType = {
   provider: {},
-  targetURL: string,
+  targetURL?: string,
   embedURL: string,
   queryParams: {},
+};
+
+export type {
+  OEmbedResponseType,
+  PlatformType,
 };
 
 class Platform {
@@ -35,9 +40,9 @@ class Platform {
 
   embedURL: string;
 
-  targetURL: string;
+  targetURL: string | undefined;
 
-  response: {} = {};
+  response: RequestResponseType = null;
 
   queryParams: {};
 
@@ -54,16 +59,19 @@ class Platform {
   }
 
   run = async (): Promise<OEmbedResponseType> => {
-    const response = await makeRequest(`${this.targetURL}?url=${encodeURIComponent(this.embedURL)}`);
+    const response = await makeRequest(`${this.targetURL || this.embedURL}?url=${encodeURIComponent(this.embedURL)}`);
     this.response = response;
     if (response && response.data) {
-      response.data.html = wrapHTML(response.data.html);
-      return response.data;
+      const html = wrapHTML(response.data.html);
+      return {
+        version: 0.1,
+        type: "rich",
+        title: "Twitch",
+        html,
+      };
     }
     return null;
   }
 }
 
-module.exports = Platform;
-
-export {};
+export default Platform;

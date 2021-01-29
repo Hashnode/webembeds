@@ -1,32 +1,13 @@
-const UrlParse = require("url-parse");
-const oembed = require("oembed");
-const async = require("async");
-const { AsyncFunction } = require("async");
-const Platform = require("./Platform.ts");
-const oEmbedProviders = require("../utils/providers/oembed.providers.js");
-const { makeRequest } = require("../utils/requestHandler.ts");
+import UrlParse from "url-parse";
+import oembed from "oembed";
+import Platform, { OEmbedResponseType } from "./Platform";
+import oEmbedProviders from "../utils/providers/oembed.providers";
+import { getMetaData } from "../utils/requestHandler";
+import { wrapFallbackHTML } from "../utils/html.utils";
+import tryEach from "async/tryEach";
 
 /* eslint-disable camelcase */
 // eslint-disable-next-line no-unused-vars
-type OEmbedResponseType = {
-  type: "photo" | "video" | "link" | "rich",
-  version: 0.1,
-  title: string,
-  author_name?: string,
-  author_url?: string,
-  provider_name?: string,
-  provider_url?: string,
-  cache_age?: number,
-  thumbnail_url?: string,
-  // The width of the optional thumbnail.
-  // If this parameter is present, thumbnail_url and thumbnail_height must also be present.
-  thumbnail_width?: string,
-  // The height of the optional thumbnail.
-  // If this parameter is present, thumbnail_url and thumbnail_width must also be present.
-  thumbnail_height?: string,
-  html?: string,
-};
-
 type EmbedErrorType = {
   type: "request-error",
   html?: string | null,
@@ -34,7 +15,7 @@ type EmbedErrorType = {
   code?: number,
 };
 
-module.exports = class WebembedHandler {
+export default class WebembedHandler {
   // The main embed URL
   embedURL: string
 
@@ -48,7 +29,6 @@ module.exports = class WebembedHandler {
 
   constructor(incomingURL: string) {
     this.embedURL = incomingURL;
-
     const url = new UrlParse(this.embedURL);
     this.queryParams = url.query;
   }
@@ -83,56 +63,62 @@ module.exports = class WebembedHandler {
 
     return {
       provider: destinationProvider,
-      targetURL,
+      targetURL: targetURL || this.embedURL,
     };
   }
 
-  generateOEmbed = (callback: typeof AsyncFunction) => {
+  generateOEmbed = (callback: any) => {
     console.log("Running generateOEmbed");
-    const { embedURL, queryParams } = this;
-    // eslint-disable-next-line consistent-return
-    oembed.fetch(embedURL, { format: "json", ...queryParams }, (error: any, result: OEmbedResponseType): any => {
+    const { embedURL } = this;
+    oembed.fetch(embedURL, { format: "json" }, (error: any, result: OEmbedResponseType): any => {
       if (error) {
-        return callback(error, null);
+        console.log("Running generateOEmbed", !!error);
       }
-      callback(null, result);
+      callback(true);
     });
   }
 
-  // eslint-disable-next-line consistent-return
-  generateManually = async (callback: typeof AsyncFunction) => {
-    console.log("Running generateManually");
-
+  generateManually = async (callback: any) => {
     const providerDetails = this.detectProvider();
+
     const { provider = {}, targetURL }: { provider: {
       custom? : boolean,
       customClass?: any,
-    } | null, targetURL: null } = providerDetails;
+    } | null, targetURL: string } = providerDetails;
     const { embedURL, queryParams } = this;
 
     if (!provider || !targetURL) {
-      return callback(true, null);
+      return null;
     }
     // This should fetch an oembed response
-    if (provider && targetURL) {
-      if (provider && provider.custom) {
-        const CustomClass = provider.customClass;
-        this.platform = new CustomClass({
-          provider, targetURL, embedURL, queryParams,
-        });
-      } else {
-        this.platform = new Platform({
-          provider, targetURL, embedURL, queryParams,
-        });
-      }
-      const finalResponse = await this.platform.run();
-      callback(null, finalResponse);
+    if (provider && provider.custom) {
+      const CustomClass = provider.customClass;
+      this.platform = new CustomClass({
+        provider, targetURL, embedURL, queryParams,
+      });
+    } else {
+      this.platform = new Platform({
+        provider, targetURL, embedURL, queryParams,
+      });
     }
+    const finalResponse = await this.platform.run();
+    // callback(null, finalResponse);
+    return finalResponse;
   }
 
   // Generate a common fallback here by scraping for the common metadata from the platform
   // Use this.platform to generate fallback as it already has a response object
-  generateFallback = async (callback: typeof AsyncFunction) => (1);
+  generateFallback = async (callback: any) => {
+    console.log("Running Fallback wqeqwe ");
+    try {
+      const data = await getMetaData(this.embedURL);
+      const html = wrapFallbackHTML(data);
+      return { ...data, html };
+    } catch (error) {
+      console.log("12312321", error)
+      return null;
+    }
+  };
 
   /**
   * First try with oembed()
@@ -147,9 +133,8 @@ module.exports = class WebembedHandler {
       If this fails too, return a fatal error
    */
   generateOutput = async (): Promise<OEmbedResponseType> => new Promise((resolve, reject) => {
-    async.tryEach([this.generateOEmbed, this.generateManually, this.generateFallback],
+    tryEach([this.generateOEmbed, this.generateManually],
       (error: any, results: any): void => {
-        // console.log(error, results);
         if (error) {
           reject(error);
         }
@@ -170,5 +155,3 @@ module.exports = class WebembedHandler {
     return { output: null, error: true };
   }
 };
-
-export {};

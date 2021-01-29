@@ -1,20 +1,21 @@
-const Platform = require("../../modules/Platform.ts");
-const { wrapHTML } = require("../html.utils.ts");
+import Platform, { OEmbedResponseType, PlatformType } from "../../modules/Platform";
 
-class Giphy extends Platform {
+export default class Giphy extends Platform {
   // eslint-disable-next-line no-useless-constructor
-  constructor(args: {}) {
+  constructor(args: PlatformType) {
     super(args);
   }
 
-  run = async () => {
+  run = async (): Promise<OEmbedResponseType> => {
     console.log("Custom Giphy pull");
-    console.log(this.response.data);
     const data = await super.run();
     console.log("as", data);
-    return `<iframe src="${data}" />`;
+
+    return {
+      version: 0.1,
+      type: "rich",
+      title: "Giphy",
+      html: `<iframe src="${data}" />`,
+    };
   }
 }
-
-module.exports = Giphy;
-export {};

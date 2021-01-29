@@ -1,18 +1,19 @@
-const Platform = require("../../modules/Platform.ts");
-const { wrapHTML } = require("../html.utils.ts");
+import Platform, { OEmbedResponseType, PlatformType } from "../../modules/Platform";
 
-class Instagram extends Platform {
+export default class Instagram extends Platform {
   // eslint-disable-next-line no-useless-constructor
-  constructor(args: {}) {
+  constructor(args: PlatformType) {
     super(args);
   }
 
-  run = () => {
+  run = async (): Promise<OEmbedResponseType> => {
     console.log("Custom Instagram pull");
     const id = this.embedURL.replace("https://www.instagram.com/p/", "").trim().replace(/\//g, "");
-    return `<iframe src="https://www.instagram.com/p/${id}/embed/" />`;
+    return {
+      version: 0.1,
+      type: "rich",
+      title: "Instagram",
+      html: `<iframe src="https://www.instagram.com/p/${id}/embed/" />`,
+    };
   }
 }
-
-module.exports = Instagram;
-export {};
