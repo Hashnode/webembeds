@@ -15,6 +15,15 @@ type EmbedErrorType = {
   code?: number,
 };
 
+type ProviderDetails = { 
+  provider: {
+    custom? : boolean,
+    customClass?: any,
+    discover: boolean,
+  } | null, 
+  targetURL: string 
+};
+
 export default class WebembedHandler {
   // The main embed URL
   embedURL: string
@@ -27,10 +36,13 @@ export default class WebembedHandler {
 
   matchedPlatform: {} | null = null;
 
+  providerDetails: ProviderDetails;
+
   constructor(incomingURL: string) {
     this.embedURL = incomingURL;
     const url = new UrlParse(this.embedURL);
     this.queryParams = url.query;
+    this.providerDetails = this.detectProvider();
   }
 
   detectProvider = () => {
@@ -43,12 +55,8 @@ export default class WebembedHandler {
           endpoint.schemes.forEach((scheme: string) => {
             // eslint-disable-next-line no-useless-escape
             if (this.embedURL.match(scheme.replace(/\*/g, ".*").replace(/\//g, "\/").replace(/\//g, "\\/"))) {
-              if (endpoint.url.indexOf("*") > -1) {
-                targetURL = endpoint.url;
-              } else {
-                targetURL = endpoint.url;
-              }
-
+              // TODO: Pattern match here
+              targetURL = endpoint.url;
               destinationProvider = provider;
             }
           });
@@ -68,54 +76,60 @@ export default class WebembedHandler {
   }
 
   generateOEmbed = (callback: any) => {
-    console.log("Running generateOEmbed");
     const { embedURL } = this;
-    oembed.fetch(embedURL, { format: "json" }, (error: any, result: OEmbedResponseType): any => {
-      if (error) {
-        console.log("Running generateOEmbed", !!error);
-      }
+    const { provider, targetURL } = this.providerDetails;
+
+    if(provider && !provider.discover) {
+      console.log("no discover");
       callback(true);
+      return;
+    }
+    
+    oembed.fetch(embedURL, { format: "json", maxwidth: 800, ...this.queryParams }, (error: any, result: OEmbedResponseType): any => {
+      if (error) {
+        callback(true);
+        return;
+      }
+      callback(null, result);
     });
   }
 
   generateManually = async (callback: any) => {
-    const providerDetails = this.detectProvider();
+    return new Promise(async (resolve, reject) => {
+      
+      const { provider, targetURL } = this.providerDetails;
 
-    const { provider = {}, targetURL }: { provider: {
-      custom? : boolean,
-      customClass?: any,
-    } | null, targetURL: string } = providerDetails;
-    const { embedURL, queryParams } = this;
+      const { embedURL, queryParams } = this;
 
-    if (!provider || !targetURL) {
-      return null;
-    }
-    // This should fetch an oembed response
-    if (provider && provider.custom) {
-      const CustomClass = provider.customClass;
-      this.platform = new CustomClass({
-        provider, targetURL, embedURL, queryParams,
-      });
-    } else {
-      this.platform = new Platform({
-        provider, targetURL, embedURL, queryParams,
-      });
-    }
-    const finalResponse = await this.platform.run();
-    // callback(null, finalResponse);
-    return finalResponse;
+      if (!provider || !targetURL) {
+        return reject();
+      }
+
+      // This should fetch an oembed response
+      if (provider && provider.custom) {
+        const CustomClass = provider.customClass;
+        this.platform = new CustomClass({
+          provider, targetURL, embedURL, queryParams,
+        });
+      } else {
+        this.platform = new Platform({
+          provider, targetURL, embedURL, queryParams,
+        });
+      }
+      
+      const finalResponse = await this.platform.run();
+      resolve(finalResponse);
+    })
   }
 
   // Generate a common fallback here by scraping for the common metadata from the platform
   // Use this.platform to generate fallback as it already has a response object
   generateFallback = async (callback: any) => {
-    console.log("Running Fallback wqeqwe ");
     try {
       const data = await getMetaData(this.embedURL);
-      const html = wrapFallbackHTML(data);
+      const html = await wrapFallbackHTML(data);
       return { ...data, html };
     } catch (error) {
-      console.log("12312321", error)
       return null;
     }
   };
@@ -133,7 +147,7 @@ export default class WebembedHandler {
       If this fails too, return a fatal error
    */
   generateOutput = async (): Promise<OEmbedResponseType> => new Promise((resolve, reject) => {
-    tryEach([this.generateOEmbed, this.generateManually],
+    tryEach([this.generateOEmbed, this.generateManually, this.generateFallback],
       (error: any, results: any): void => {
         if (error) {
           reject(error);

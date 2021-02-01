@@ -1,6 +1,8 @@
 /* eslint-disable no-tabs */
+import request from "request";
 import urlMetadata from "url-metadata";
 import cheerio from "cheerio";
+import fetch from "node-fetch";
 
 // interface MetaTagType {
 //   name: string,
@@ -126,103 +128,86 @@ export const wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrribute
   return $.html();
 };
 
-export const wrapFallbackHTML = (data: urlMetadata.Result) => `<html lang="en">
-	<head></head>
-	<body
-		onload="parent.adjustIframeSize('gist-1611837122830', document.body.scrollHeight)"
-		data-new-gr-c-s-check-loaded="14.993.0"
-		data-gr-ext-installed=""
-	>
-		<style>
-			body,
-			html {
-				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
-					'Helvetica Neue', sans-serif;
-			}
-			* {
-				margin: 0;
-				padding: 0;
-			}
-			.link-card {
-				width: 100%;
-				background: #eee;
-				display: -webkit-box;
-				display: -ms-flexbox;
-				display: flex;
-				-webkit-box-orient: horizontal;
-				-webkit-box-direction: normal;
-				-ms-flex-direction: row;
-				flex-direction: row;
-				border-radius: 4px;
-				border: 1px solid #ddd;
-				overflow: hidden;
-				text-decoration: none;
-			}
-			.link-card .link-content {
-				padding: 12px;
-				width: calc(100% - 300px);
-			}
-			.link-card .link-content .big-text {
-				display: block;
-				font-size: 22px;
-				font-weight: 600;
-				color: #212121;
-				margin-bottom: 8px;
-			}
-			.link-card .link-content .small-desc {
-				font-size: 16px;
-				color: #454545;
-				display: block;
-				margin-bottom: 8px;
-			}
-			.link-card .link-content .small-desc.host-name {
-				color: #999;
-			}
-			.link-card .link-image {
-				display: block;
-				width: 300px;
-				height: 158px;
-				background-color: #fefefe;
-				background-size: cover;
-				background-position: center center;
-			}
-			@media (max-width: 768px) {
-				.link-card {
-					-ms-flex-wrap: wrap;
-					flex-wrap: wrap;
-				}
-				.link-card .link-image {
-					width: 100%;
-					height: 250px;
-				}
-				.link-card .link-content {
-					width: 100%;
-				}
-			}
-			@media (max-width: 425px) {
-				.link-card .link-image {
-					width: 100%;
-					height: 255px;
-				}
-			}
-		</style>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<title>${data["og:title"]}</title>
+/**
+ * Promise based request
+ * @param {*} url
+ */
+function doRequest(url) {
+  return new Promise((resolve, reject) => {
+    request.get({ url, encoding: "binary" }, (
+      error: any,
+      imageResponse: { headers: { [x: string]: any; }; },
+      imageBody: string,
+    ) => {
+      if (error) {
+        return reject(error);
+      }
+      const imageType = imageResponse.headers["content-type"];
+      const base64 = new Buffer(imageBody, "binary").toString("base64");
+      const dataURI = `data:${imageType};base64,${base64}`;
+      const payload = {
+        data: dataURI,
+        isDev: process.env.NODE_ENV === "development",
+      };
+      const hnURL = "https://uploads.hashnode.com/api/upload";
+      const cdnURL = "https://cdn.hashnode.com/";
+      fetch(hnURL, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "Cloudmate-Authorization": process.env.cloudmateKey || "",
+          Accept: "*/*",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.Key) {
+            console.log("No cloudmate key");
+            return;
+          }
+          const imageUrl = cdnURL + data.Key;
+          resolve(imageUrl);
+        });
+    });
+  });
+}
 
-		<a href="${data["og:url"]}" target="_blank" class="link-card">
-			<div
-				class="link-image"
-				style="
-					background-image: url('${data["og:image"]}');
-				"
-			></div>
-			<div class="link-content">
-				<span class="big-text">${data["og:title"]}</span>
-				<span class="small-desc">${data["og:description"]}</span>
-				<span class="small-desc host-name">${data["og:url"]}</span>
-			</div>
-		</a>
-	</body>
-</html>
-`;
+export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
+	const coverImage = (await doRequest(data["og:image"])) || data["og:image"]; // Download the image and upload to our CDN
+	let mainURL;
+
+	try {
+		mainURL = new URL(data["og:url"]).hostname;
+	} catch (error) {
+		mainURL = "/";
+	}
+
+	const description = `${data["og:description"].substring(0, 150)}${data["og:description"].length > 150 ? "..." : ""}`;
+
+	return `<html lang="en">
+		<head>
+		<style>
+		body,html{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif}*{margin:0;padding:0}.link-card{width:100%;background:#eee;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;border-radius:4px;border:1px solid #ddd;overflow:hidden;text-decoration:none}.link-card .link-content{padding:12px;width:calc(100% - 300px)}.link-card .link-content .big-text{display:block;font-size:22px;font-weight:600;color:#212121;margin-bottom:8px}.link-card .link-content .small-desc{font-size:16px;color:#454545;display:block;margin-bottom:8px}.link-card .link-content .small-desc.host-name{color:#999}.link-card .link-image{display:block;width:300px;height:158px;background-color:#fefefe;background-size:cover;background-position:center center}@media (max-width:768px){.link-card{-ms-flex-wrap:wrap;flex-wrap:wrap}.link-card .link-image{width:100%;height:250px}.link-card .link-content{width:100%}}@media (max-width:425px){.link-card .link-image{width:100%;height:255px}}
+		</style>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<title>${data["og:title"]}</title>
+		</head>
+		<body>
+			<a href="${data["og:url"]}" target="_blank" class="link-card">
+				<div
+					class="link-image"
+					style="background-image: url('${coverImage}?w=1600&h=840&fit=crop&crop=entropy&auto=format,enhance&q=60');
+						background-size: cover;"
+				></div>
+				<div class="link-content">
+					<span class="big-text">${data["og:title"]}</span>
+					<span class="small-desc">${description}</span>
+					<span class="small-desc host-name">${mainURL}</span>
+				</div>
+			</a>
+		</body>
+	</html>
+	`
+};

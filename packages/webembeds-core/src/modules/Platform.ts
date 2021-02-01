@@ -2,6 +2,12 @@ import cheerio from "cheerio";
 import { makeRequest, RequestResponseType } from "../utils/requestHandler";
 import { wrapHTML } from "../utils/html.utils";
 
+type OembedRequestQueryParamsType = {
+  theme: string,
+  maxwidth: number,
+  maxheight: number,
+} | {};
+
 /* eslint-disable camelcase */
 // eslint-disable-next-line no-unused-vars
 type OEmbedResponseType = {
@@ -44,7 +50,7 @@ class Platform {
 
   response: RequestResponseType = null;
 
-  queryParams: {};
+  queryParams: OembedRequestQueryParamsType = {};
 
   cheerio: any;
 
@@ -58,9 +64,10 @@ class Platform {
     this.cheerio = cheerio;
   }
 
-  run = async (): Promise<OEmbedResponseType> => {
-    const response = await makeRequest(`${this.targetURL || this.embedURL}?url=${encodeURIComponent(this.embedURL)}`);
+  async run(): Promise<OEmbedResponseType> {
+    const response = await makeRequest(`${this.targetURL}?url=${encodeURIComponent(this.embedURL)}`);
     this.response = response;
+
     if (response && response.data) {
       const html = wrapHTML(response.data.html);
       return {

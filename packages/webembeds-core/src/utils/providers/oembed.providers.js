@@ -4,6 +4,8 @@ import Giphy from "./giphy.provider";
 import Instagram from "./instagram.provider";
 import Twitch from "./twitch.provider";
 import Glitch from "./glitch.provider";
+import Loom from "./loom.provider";
+import Codepen from "./codepen.provider";
 
 const oEmbedProviders = [
   {
@@ -174,7 +176,7 @@ const oEmbedProviders = [
           "https://audioboom.com/channel/*",
           "https://audioboom.com/posts/*",
         ],
-        url: "https://audioboom.com/publishing/oembed/v4.{format}",
+        url: "https://audioboom.com/publishing/oembed/v4.json", // TODO
         formats: [
           "json",
           "xml",
@@ -506,19 +508,19 @@ const oEmbedProviders = [
       },
     ],
   },
-  {
-    provider_name: "Codepen",
-    provider_url: "https://codepen.io",
-    endpoints: [
-      {
-        schemes: [
-          "http://codepen.io/*",
-          "https://codepen.io/*",
-        ],
-        url: "https://codepen.io/api/oembed",
-      },
-    ],
-  },
+  // {
+  //   provider_name: "Codepen",
+  //   provider_url: "https://codepen.io",
+  //   endpoints: [
+  //     {
+  //       schemes: [
+  //         "http://codepen.io/*",
+  //         "https://codepen.io/*",
+  //       ],
+  //       url: "https://codepen.io/api/oembed",
+  //     },
+  //   ],
+  // }, // TODO
   {
     provider_name: "Codepoints",
     provider_url: "https://codepoints.net",
@@ -3762,6 +3764,19 @@ const oEmbedProviders = [
       },
     ],
   },
+  {
+    provider_name: "Canva",
+    provider_url: "https://canva.com",
+    endpoints: [
+      {
+        schemes: [
+          "https://www.canva.com/design/*",
+        ],
+        url: "https://www.canva.com/_oembed",
+        discovery: true,
+      },
+    ],
+  },
 ];
 
 const additionalOEmbedProviders = [
@@ -3778,18 +3793,6 @@ const additionalOEmbedProviders = [
       },
     ],
   },
-  {
-    provider_name: "Canva",
-    provider_url: "https://canva.com",
-    endpoints: [
-      {
-        schemes: [
-          "https://www.canva.com/design/*",
-        ],
-        url: "https://www.canva.com/design/*/view",
-      },
-    ],
-  }
 ];
 
 const customProviders = [
@@ -3804,6 +3807,7 @@ const customProviders = [
           "https://gist.github.com/*",
         ],
         url: "https://gist.github.com",
+        discovery: false,
       },
     ],
   },
@@ -3862,7 +3866,38 @@ const customProviders = [
           "https://media.giphy.com/media/*/giphy.gif",
         ],
         url: "https://giphy.com/services/oembed",
-        discovery: true,
+        discovery: false,
+      },
+    ],
+  },
+  {
+    provider_name: "Loom",
+    provider_url: "https://loom.com",
+    custom: true,
+    customClass: Loom,
+    endpoints: [
+      {
+        schemes: [
+          "https://www.loom.com/share/*",
+        ],
+        url: "https://loom.com",
+        discovery: false,
+      },
+    ],
+  },
+  {
+    provider_name: "Codepen",
+    provider_url: "https://codepen.io",
+    custom: true,
+    customClass: Codepen,
+    endpoints: [
+      {
+        schemes: [
+          "http://codepen.io/*",
+          "https://codepen.io/*",
+        ],
+        url: "https://codepen.io/api/oembed",
+        discovery: false,
       },
     ],
   },

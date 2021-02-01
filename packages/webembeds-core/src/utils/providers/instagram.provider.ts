@@ -13,7 +13,7 @@ export default class Instagram extends Platform {
       version: 0.1,
       type: "rich",
       title: "Instagram",
-      html: `<iframe src="https://www.instagram.com/p/${id}/embed/" />`,
+      html: `<iframe width="100%" height="100%" src="https://www.instagram.com/p/${id}/embed/" />`,
     };
   }
 }

@@ -11,6 +11,8 @@ import urlMetaData, { Result } from "url-metadata";
 type RequestResponseType = {
   data: {
     html: string,
+    width?: number,
+    height?: number,
   }
 } | null;
 
@@ -25,15 +27,14 @@ export const makeRequest = async (url: string): Promise<RequestResponseType> => 
         format: "json",
       },
       headers: {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
-        Connection: "keep-alive",
-        Accept: "*/*",
-        "accept-encoding": "gzip, deflate, br",
+        // "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
+        // Connection: "keep-alive",
+        // Accept: "*/*",
+        // "accept-encoding": "gzip, deflate, br",
       },
     });
     return response;
   } catch (error) {
-    console.log("Request error", error);
     return null;
   }
 };
@@ -43,7 +44,6 @@ export const getMetaData = (url: string): Promise<Result> => {
   return new Promise((resolve, reject) => {
     urlMetaData(url).then(
       (metadata: urlMetaData.Result) => { // success handler
-        console.log(metadata);
         // if (!metadata["og:image:width"] || !metadata["og:image:height"]) {
           // FastImage(metadata["og:image"], (error: any, imageData: any): any => {
           //   if (error) {

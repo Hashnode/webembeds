@@ -8,8 +8,6 @@ export default class ExpoSnack extends Platform {
   }
 
   run = async (): Promise<OEmbedResponseType> => {
-    console.log("Custom expo snack");
-
     const { cheerio } = this;
 
     const url = UrlParse(this.embedURL);
@@ -17,9 +15,10 @@ export default class ExpoSnack extends Platform {
     const $ = cheerio.load("<div>");
 
     $("div").attr("data-snack-id", snackId);
-    $("div").attr("data-snack-platform", "data-snack-platform");
-    $("div").attr("data-snack-preview", "overflow:hidden;background:#F9F9F9;border:1px solid var(--color-border);border-radius:4px;height:505px;width:100%");
-    $("div").attr("stye", "light");
+    $("div").attr("data-snack-platform", "web");
+    $("div").attr("data-snack-preview", "true");
+    $("div").attr("style", "overflow:hidden;background:#F9F9F9;border:1px solid var(--color-border);border-radius:4px;height:505px;width:100%");
+    $("div").attr("data-snack-theme", this.queryParams.theme ? this.queryParams.theme : "light");
 
     $("body").append("<script>");
     $("script").attr("src", "https://snack.expo.io/embed.js");

@@ -17,12 +17,16 @@ export default class Glitch extends Platform {
   // https://glitch.com/edit/#!/remote-hands?path=README.md%3A1%3A0
   // https://glitch.com/embed/#!/embed/remote-hands?previewSize=100&previewFirst=true&sidebarCollapsed=true
   run = async (): Promise<OEmbedResponseType> => {
-    console.log(this.embedURL.replace("/edit/", "/embed/#!/embed/"));
     return {
       version: 0.1,
       type: "rich",
       title: "Glitch",
-      html: `<iframe src="${this.embedURL.replace("/edit/", "/embed/#!/embed/")}" />`,
+      html: `<iframe
+          src="${this.embedURL.replace("/edit/", "/embed/#!/embed/")}"
+          title="Glitch"
+          allow="geolocation; microphone; camera; midi; vr; encrypted-media"
+          style="height: 500px; width: 100%; border: 0;">
+        </iframe>`,
     };
   }
 }
