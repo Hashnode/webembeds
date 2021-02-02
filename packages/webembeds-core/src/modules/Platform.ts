@@ -3,9 +3,9 @@ import { makeRequest, RequestResponseType } from "../utils/requestHandler";
 import { wrapHTML } from "../utils/html.utils";
 
 type OembedRequestQueryParamsType = {
-  theme: string,
-  maxwidth: number,
-  maxheight: number,
+  theme?: string | null,
+  maxwidth?: number,
+  maxheight?: number,
 } | {};
 
 /* eslint-disable camelcase */
@@ -33,12 +33,13 @@ type PlatformType = {
   provider: {},
   targetURL?: string,
   embedURL: string,
-  queryParams: {},
+  queryParams: OembedRequestQueryParamsType,
 };
 
 export type {
   OEmbedResponseType,
   PlatformType,
+  OembedRequestQueryParamsType,
 };
 
 class Platform {

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ReactNode } from "react";
 
-const links = {
+const links: any = {
 	spotify: "https://open.spotify.com/track/3G8o2zm7LaF6eeVuvLlrkJ?si=Sx1sCnhDT6GXqSLIwSLOeQ",
 	gist: "https://gist.github.com/theevilhead/7ac2fbc3cda897ebd87dbe9aeac130d6",
 	canva: "https://www.canva.com/design/DAET1m0_11c/jFBlYrKc8CQCb2boU9KC-A/view",
@@ -25,11 +25,18 @@ const links = {
 };
 
 function Index() {
-	const urlRef = useRef(null);
-	const [result, setResult] = useState(null);
+	const urlRef = useRef<HTMLInputElement>(null);
+	const [result, setResult] = useState<{ output: { html?: string }, error: boolean }>();
 
 	const handleURL = async (incomingURL?: string) => {
-		const url = incomingURL || urlRef.current.value;
+    if (null === urlRef) {
+      return;
+    }
+    if (null === urlRef.current) {
+      return;
+    }
+
+		const url = incomingURL || (urlRef !== null ? urlRef.current.value : null);
 
 		if (!url) {
 			return;
@@ -46,7 +53,7 @@ function Index() {
 			},
 		});
     const json = await response.json();
-    console.log(json)
+    console.log(json);
 		setResult(json ? json.data : null);
 	};
 
@@ -55,7 +62,7 @@ function Index() {
 			<h1 className="text-4xl font-semibold text-center py-12">Webembeds</h1>
 			<div className="flex items-center">
         <input className="border border-black w-full p-4 text-lg" placeholder={"Enter url"} type="url" ref={urlRef} />
-        <button className="p-4 bg-green-300 w-1/6 border-2 border-transparent text-lg" type="button" onClick={handleURL}>
+        <button className="p-4 bg-green-300 w-1/6 border-2 border-transparent text-lg" type="button" onClick={() => { handleURL(); }}>
           Submit
         </button>
       </div>
@@ -84,7 +91,7 @@ function Index() {
         </div>
         <div className="col-span-2">
           {result && !result.error ? (
-            <div className="px-2" dangerouslySetInnerHTML={{ __html: result.output.html }} />
+            <div className="px-2" dangerouslySetInnerHTML={{ __html: result.output.html || "" }} />
           ) : null}
           {
             result && result.error ? "Something went wrong" : ""
