@@ -66,7 +66,7 @@ const links = {
   anchor: "https://anchor.fm/startapodcast/episodes/Whats-your-podcast-about-e17krq/a-a2q3ft",
   loom: "https://www.loom.com/share/0281766fa2d04bb788eaf19e65135184",
   vimeo: "https://vimeo.com/124283821",
-  facebook: "https://www.facebook.com/MoHFWIndia/posts/1757090964450303",
+  // facebook: "https://www.facebook.com/MoHFWIndia/posts/1757090964450303",
   fallback: "https://hashnode.com",
 };
 
