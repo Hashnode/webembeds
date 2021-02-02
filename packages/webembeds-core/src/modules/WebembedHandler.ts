@@ -82,7 +82,7 @@ export default class WebembedHandler {
     const { embedURL } = this;
     const { provider } = this.providerDetails;
 
-    if (provider && !provider.discover) {
+    if (provider && provider.custom) {
       callback(true);
       return;
     }

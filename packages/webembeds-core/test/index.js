@@ -1,9 +1,10 @@
 const oembed = require("oembed");
 const webembed = require("../build/bundle");
 
-// // eslint-disable-next-line no-unused-expressions
+// eslint-disable-next-line no-unused-expressions
 // https://www.youtube.com/watch?v=32I0Qso4sDg&width=720&height=480
-// const l = await webembed("https://twitter.com/tapasadhikary/status/1343081386173874177");
+// https://www.youtube.com/oembed
+// https://api.instagram.com/oembed/?url=https://www.instagram.com/p/CKQWst1A3my&hidecaption=0&maxwidth=540
 
 /**
 Markdown samples
@@ -65,14 +66,14 @@ const links = {
   soundcloud: "https://soundcloud.com/hit-jatt/jatt-disde-arjan-dhillon",
   anchor: "https://anchor.fm/startapodcast/episodes/Whats-your-podcast-about-e17krq/a-a2q3ft",
   loom: "https://www.loom.com/share/0281766fa2d04bb788eaf19e65135184",
-  vimeo: "https://vimeo.com/124283821",
+  vimeo: "https://vimeo.com/336812660",
   // facebook: "https://www.facebook.com/MoHFWIndia/posts/1757090964450303",
   fallback: "https://hashnode.com",
 };
 
 (async function () {
   try {
-    const url = links.twitch;
+    const url = links.vimeo;
     const l = await webembed.default(url, {
       host: "hashnode.com",
     });
@@ -82,11 +83,8 @@ const links = {
   }
 }());
 
-// oembed.fetch(links.repl, { format: "json" },
+// oembed.fetch("https://vimeo.com/124283821", { format: "json" },
 // (error, result) => {
-//   if (error) console.error(error);
+//   if (error) console.error("test", error);
 //   else console.log("oEmbed result", result);
 // });
-
-// https://www.youtube.com/oembed
-//* *** */ https://api.instagram.com/oembed/?url=https://www.instagram.com/p/CKQWst1A3my&hidecaption=0&maxwidth=540
