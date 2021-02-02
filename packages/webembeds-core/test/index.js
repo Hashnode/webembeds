@@ -72,8 +72,10 @@ const links = {
 
 (async function () {
   try {
-    const url = links.giphy;
-    const l = await webembed.default(url);
+    const url = links.twitch;
+    const l = await webembed.default(url, {
+      host: "hashnode.com",
+    });
     console.log("Test Result ", l);
   } catch (error) {
     console.log("final", JSON.stringify(error));

@@ -6,12 +6,10 @@ export default class GithubGist extends Platform {
     super(args);
   }
 
-  run = async (): Promise<OEmbedResponseType> => {
-    return {
-      version: 0.1,
-      type: "rich",
-      title: "Github Gist",
-      html: `<script src="${this.embedURL}.js"></script>`,
-    };
-  }
+  run = async (): Promise<OEmbedResponseType> => ({
+    version: 0.1,
+    type: "rich",
+    title: "Github Gist",
+    html: `<script src="${this.embedURL}.js"></script>`,
+  })
 }

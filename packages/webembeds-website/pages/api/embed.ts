@@ -18,7 +18,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
-  // res.setHeader("Content-Type", "text/html");
-  const embedResponse = await webembed.default(embedURL);
+
+  // Twitch needs a parent url where the embed is being used.
+  const host = req.headers.host;
+  
+  const embedResponse = await webembed.default(embedURL, { host: host });
   res.json({ data: embedResponse });
 }

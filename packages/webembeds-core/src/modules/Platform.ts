@@ -1,6 +1,7 @@
 import cheerio from "cheerio";
 import { makeRequest, RequestResponseType } from "../utils/requestHandler";
 import { wrapHTML } from "../utils/html.utils";
+import { WebEmbedInitOptions } from "../index";
 
 type OembedRequestQueryParamsType = {
   theme?: string | null,
@@ -34,6 +35,7 @@ type PlatformType = {
   targetURL?: string,
   embedURL: string,
   queryParams: OembedRequestQueryParamsType,
+  options: WebEmbedInitOptions
 };
 
 export type {
@@ -55,14 +57,20 @@ class Platform {
 
   cheerio: any;
 
+  options: WebEmbedInitOptions;
+
   constructor({
-    provider, targetURL, embedURL, queryParams,
+    provider, targetURL, embedURL, queryParams, options,
   }: PlatformType) {
     this.provider = provider;
     this.targetURL = targetURL;
     this.embedURL = embedURL;
     this.queryParams = queryParams;
     this.cheerio = cheerio;
+
+    this.options = {
+      host: options.host ?? null,
+    };
   }
 
   async run(): Promise<OEmbedResponseType> {
