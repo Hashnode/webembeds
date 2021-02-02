@@ -6,7 +6,7 @@ export default class Twitch extends Platform {
   run = async (): Promise<OEmbedResponseType> => {
     const { host } = this.options;
 
-    let parentURL: string | null;
+    let parentURL;
 
     try {
       if (host) {
