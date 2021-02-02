@@ -6,20 +6,11 @@ export default class Twitch extends Platform {
   run = async (): Promise<OEmbedResponseType> => {
     const { host } = this.options;
 
-    let parentURL;
-
-    try {
-      if (host) {
-        const hostURL = new URL(host);
-        parentURL = hostURL.hostname;
-      }
-    } catch (error) {
-      parentURL = null;
-    }
+    const parentURL = host || "localhost";
 
     try {
       const url = new URL(this.embedURL);
-      let href = `https://player.twitch.tv/?autoplay=false&parent=${parentURL || "localhost"}`;
+      let href = `https://player.twitch.tv/?autoplay=false&parent=${parentURL}`;
       // Supports
       // Channel Ex, https://www.twitch.tv/lck
       // Video Ex: https://www.twitch.tv/videos/668650517
@@ -32,7 +23,7 @@ export default class Twitch extends Platform {
         url.hostname = "clips.twitch.tv";
         url.pathname = "embed";
         url.searchParams.set("clip", clipId);
-        url.searchParams.set("parent", parentURL || "localhost");
+        url.searchParams.set("parent", parentURL);
         url.searchParams.set("autoplay", "false");
         href = url.toString();
       } else {
