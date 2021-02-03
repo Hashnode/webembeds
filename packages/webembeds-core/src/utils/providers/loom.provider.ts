@@ -7,7 +7,6 @@ export default class Loom extends Platform {
   }
 
   run = async (): Promise<OEmbedResponseType> => {
-    console.log(this.embedURL.replace("/edit/", "/embed/#!/embed/"));
     const loomId = this.embedURL.replace("https://www.loom.com/share/", "");
     return {
       version: 0.1,

@@ -44,7 +44,6 @@ function Index() {
 
 		// https://webembeds.com
 		const requestURL = `/api/embed?url=${encodeURIComponent(url)}`;
-		console.log(requestURL);
 		const response = await fetch(requestURL, {
 			method: "GET",
 			headers: {
@@ -53,7 +52,6 @@ function Index() {
 			},
 		});
     const json = await response.json();
-    console.log(json);
 		setResult(json ? json.data : null);
 	};
 

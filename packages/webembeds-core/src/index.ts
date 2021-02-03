@@ -6,7 +6,6 @@ type WebEmbedInitOptions = {
 };
 
 async function init(incomingURL: string, options?: WebEmbedInitOptions) {
-  console.log(incomingURL, options)
   try {
     // eslint-disable-next-line no-new
     new URL(incomingURL);
