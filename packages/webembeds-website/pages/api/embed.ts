@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import UrlParse from "url-parse";
 
 const webembed = require("@webembeds/core");
 
@@ -21,7 +22,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   // Twitch needs a parent url where the embed is being used.
   const host = req.headers.host;
-  
-  const embedResponse = await webembed.default(embedURL, { host: host });
+
+  const _url = new UrlParse(embedURL, true);
+  const urlOnly = `${_url.protocol}//${_url.host}${_url.pathname}`;
+  const queryParams = _url.query;
+
+  const embedResponse = await webembed.default(urlOnly, { 
+    host: host,
+    queryParams: queryParams,
+  });
   res.json({ data: embedResponse });
 }

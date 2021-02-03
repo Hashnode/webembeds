@@ -174,18 +174,18 @@ function doRequest(url) {
 }
 
 export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
-	const coverImage = (await doRequest(data["og:image"])) || data["og:image"]; // Download the image and upload to our CDN
-	let mainURL;
+  const coverImage = (await doRequest(data["og:image"])) || data["og:image"]; // Download the image and upload to our CDN
+  let mainURL;
 
-	try {
-		mainURL = new URL(data["og:url"]).hostname;
-	} catch (error) {
-		mainURL = "/";
-	}
+  try {
+    mainURL = new URL(data["og:url"]).hostname;
+  } catch (error) {
+    mainURL = "/";
+  }
 
-	const description = `${data["og:description"].substring(0, 150)}${data["og:description"].length > 150 ? "..." : ""}`;
+  const description = `${data["og:description"].substring(0, 150)}${data["og:description"].length > 150 ? "..." : ""}`;
 
-	return `<html lang="en">
+  return `<html lang="en">
 		<head>
 		<style>
 		body,html{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif}*{margin:0;padding:0}.link-card{width:100%;background:#eee;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;border-radius:4px;border:1px solid #ddd;overflow:hidden;text-decoration:none}.link-card .link-content{padding:12px;width:calc(100% - 300px)}.link-card .link-content .big-text{display:block;font-size:22px;font-weight:600;color:#212121;margin-bottom:8px}.link-card .link-content .small-desc{font-size:16px;color:#454545;display:block;margin-bottom:8px}.link-card .link-content .small-desc.host-name{color:#999}.link-card .link-image{display:block;width:300px;height:158px;background-color:#fefefe;background-size:cover;background-position:center center}@media (max-width:768px){.link-card{-ms-flex-wrap:wrap;flex-wrap:wrap}.link-card .link-image{width:100%;height:250px}.link-card .link-content{width:100%}}@media (max-width:425px){.link-card .link-image{width:100%;height:255px}}
@@ -209,5 +209,5 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
 			</a>
 		</body>
 	</html>
-	`
+	`;
 };

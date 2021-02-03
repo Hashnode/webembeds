@@ -70,6 +70,7 @@ class Platform {
 
     this.options = {
       host: options.host ?? null,
+      queryParams: {},
     };
   }
 

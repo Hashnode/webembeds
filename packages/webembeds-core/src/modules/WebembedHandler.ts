@@ -41,10 +41,10 @@ export default class WebembedHandler {
   options: any;
 
   constructor(incomingURL: string, options: any) {
+    const { queryParams = {}, ...restOfTheOptions } = options;
     this.embedURL = incomingURL;
-    this.options = options;
-    const url = new UrlParse(this.embedURL);
-    this.queryParams = url.query;
+    this.options = restOfTheOptions;
+    this.queryParams = queryParams;
     this.providerDetails = this.detectProvider();
   }
 

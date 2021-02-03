@@ -1,5 +1,5 @@
 import UrlParse from "url-parse";
-import Platform, { OEmbedResponseType, PlatformType, OembedRequestQueryParamsType } from "../../modules/Platform";
+import Platform, { OEmbedResponseType, PlatformType } from "../../modules/Platform";
 
 export default class ExpoSnack extends Platform {
   // eslint-disable-next-line no-useless-constructor

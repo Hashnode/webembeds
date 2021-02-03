@@ -58,7 +58,7 @@ function Index() {
 	};
 
 	return (
-		<div className="w-full mx-auto max-w-7xl">
+		<div className="w-full mx-auto max-w-4xl">
 			<h1 className="text-4xl font-semibold text-center py-12">Webembeds</h1>
 			<div className="flex items-center">
         <input className="border border-black w-full p-4 text-lg" placeholder={"Enter url"} type="url" ref={urlRef} />
