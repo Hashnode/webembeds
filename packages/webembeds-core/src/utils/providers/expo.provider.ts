@@ -9,17 +9,18 @@ export default class ExpoSnack extends Platform {
 
   run = async (): Promise<OEmbedResponseType> => {
     const { cheerio } = this;
-    const { theme = null }: any = this.queryParams;
 
-    const url = UrlParse(this.embedURL);
+    const url = UrlParse(this.embedURL, true);
     const snackId = url.pathname.replace(/^\/|\/$/g, "");
-    const $ = cheerio.load("<div>");
 
+    const { theme = "light" } = url.query;
+
+    const $ = cheerio.load("<div>");
     $("div").attr("data-snack-id", snackId);
     $("div").attr("data-snack-platform", "web");
     $("div").attr("data-snack-preview", "true");
     $("div").attr("style", "overflow:hidden;background:#F9F9F9;border:1px solid var(--color-border);border-radius:4px;height:505px;width:100%");
-    $("div").attr("data-snack-theme", theme || "light");
+    $("div").attr("data-snack-theme", theme);
 
     $("body").append("<script>");
     $("script").attr("src", "https://snack.expo.io/embed.js");

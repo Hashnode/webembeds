@@ -6,6 +6,8 @@ const webembed = require("../build/bundle");
 // https://www.youtube.com/oembed
 // https://api.instagram.com/oembed/?url=https://www.instagram.com/p/CKQWst1A3my&hidecaption=0&maxwidth=540
 
+// %[https://www.instagram.com/p/CJ2ja7Tl3S5] - Not supported currently
+
 /**
 Markdown samples
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -15,8 +17,6 @@ It has survived not only five centuries, but also the leap into electronic types
 remaining essentially unchanged. It was popularised in the 1960s with the release of
 Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
 software like Aldus PageMaker including versions of Lorem Ipsum.
-
-%[https://hashnode.com]
 
 %[https://codesandbox.io/s/y2lrywpk21]
 
@@ -42,8 +42,6 @@ software like Aldus PageMaker including versions of Lorem Ipsum.
 
 %[https://www.youtube.com/watch?v=32I0Qso4sDg]
 
-%[https://www.instagram.com/p/CJ2ja7Tl3S5]
-
 %[https://glitch.com/edit/#!/remote-hands]
 
 %[https://snack.expo.io/@girishhashnode/unnamed-snack]
@@ -51,6 +49,8 @@ software like Aldus PageMaker including versions of Lorem Ipsum.
 %[https://www.twitch.tv/fresh]
 
 %[https://twitter.com/hashnode/status/1352525138659430400]
+
+%[https://hashnode.com]
 
  */
 
