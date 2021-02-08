@@ -14,8 +14,8 @@ type CustomResponse = {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<CustomResponse>) {
-  const { url = "" }: EmbedRequest = req.query;
-  
+  const { url = "", ...restOfTheQueryParams }: EmbedRequest = req.query;
+
   const embedURL = decodeURIComponent(url);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,6 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const embedResponse = await webembed.default(embedURL, { 
     host: host,
+    queryParams: {
+      ...restOfTheQueryParams,
+    }
   });
   res.json({ data: embedResponse });
 }

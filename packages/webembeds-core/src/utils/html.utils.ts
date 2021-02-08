@@ -76,18 +76,18 @@ export const extractLinkTags = ($: any) => {
 // };
 
 type CustomAtrributes = {
-	height?: number;
-	width?: number;
+	height?: number | string;
+	width?: number | string;
 	className?: string;
 };
 
-export const wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrributes) => {
+export const wrapHTML = (htmlContent: string, customAtrributes: CustomAtrributes = {}) => {
   const $ = cheerio.load(htmlContent);
   const iframe = $("iframe");
 
   const iframeExists = iframe.length > 0;
 
-  // const { width, height } = attribs;
+  const { width = "100%", height = "100%" } = customAtrributes;
 
   // const aspectRatio = Number(width) / Number(height);
 
@@ -110,8 +110,8 @@ export const wrapHTML = (htmlContent: string, customAtrributes?: CustomAtrribute
   // // eslint-disable-next-line quotes
 
   if (iframeExists) {
-    iframe.attr("width", "100%");
-    iframe.attr("height", "100%");
+    iframe.attr("width", String(width));
+    iframe.attr("height", String(height));
     iframe.attr("style", "position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;");
     iframe.attr("class", "webembed-iframe");
     $("iframe").wrap(
@@ -188,7 +188,88 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
   return `<html lang="en">
 		<head>
 		<style>
-		body,html{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif}*{margin:0;padding:0}.link-card{width:100%;background:#eee;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;border-radius:4px;border:1px solid #ddd;overflow:hidden;text-decoration:none;align-items: center;}.link-card .link-content{padding:12px;width:calc(100% - 300px)}.link-card .link-content .big-text{display:block;font-size:22px;font-weight:600;color:#212121;margin-bottom:8px}.link-card .link-content .small-desc{font-size:16px;color:#454545;display:block;margin-bottom:8px}.link-card .link-content .small-desc.host-name{color:#999}.link-card .link-image{display:block;width:300px;height:158px;background-color:#fefefe;background-size:cover;background-position:center center}@media (max-width:768px){.link-card{-ms-flex-wrap:wrap;flex-wrap:wrap}.link-card .link-image{width:100%;height:250px}.link-card .link-content{width:100%}}@media (max-width:425px){.link-card .link-image{width:100%;height:255px}}
+    body,
+    html {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif
+    }
+
+    * {
+      margin: 0;
+      padding: 0
+    }
+
+    .link-card {
+      width: 100%;
+      background: #eee;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      overflow: hidden;
+      text-decoration: none!important;
+      align-items: center;
+    }
+
+    .link-card .link-content {
+      padding: 12px;
+      width: calc(100% - 300px)
+    }
+
+    .link-card .link-content .big-text {
+      display: block;
+      font-size: 22px;
+      font-weight: 600;
+      color: #212121;
+      margin-bottom: 8px
+    }
+
+    .link-card .link-content .small-desc {
+      font-size: 16px;
+      color: #454545;
+      display: block;
+      margin-bottom: 8px
+    }
+
+    .link-card .link-content .small-desc.host-name {
+      color: #999
+    }
+
+    .link-card .link-image {
+      display: block;
+      width: 300px;
+      background-color: #fefefe;
+      background-size: cover;
+      background-position: center center
+    }
+
+    @media (max-width:768px) {
+      .link-card {
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap
+      }
+      .link-card .link-image {
+        width: 100%;
+        height:255px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .link-card .link-content {
+        width: 100%
+      }
+    }
+
+    @media (max-width:425px) {
+      .link-card .link-image {
+        width: 100%;
+        height:255px;
+      }
+    }
 		</style>
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

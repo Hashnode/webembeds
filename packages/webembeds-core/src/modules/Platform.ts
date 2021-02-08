@@ -1,13 +1,10 @@
 import cheerio from "cheerio";
+import queryString from "querystring";
 import { makeRequest, RequestResponseType } from "../utils/requestHandler";
 import { wrapHTML } from "../utils/html.utils";
 import { WebEmbedInitOptions } from "../index";
 
-type OembedRequestQueryParamsType = {
-  theme?: string | null,
-  maxwidth?: number,
-  maxheight?: number,
-} | {};
+type OembedRequestQueryParamsType = { [key: string]: string | number };
 
 /* eslint-disable camelcase */
 // eslint-disable-next-line no-unused-vars
@@ -31,11 +28,16 @@ type OEmbedResponseType = {
 } | null;
 
 type PlatformType = {
-  provider: {},
+  provider: {
+    custom? : boolean,
+    customClass?: any,
+    discover: boolean,
+    noCustomWrap: boolean,
+  } | null,
   targetURL?: string,
   embedURL: string,
-  queryParams: OembedRequestQueryParamsType,
-  options: WebEmbedInitOptions
+  options: WebEmbedInitOptions,
+  queryParams: {},
 };
 
 export type {
@@ -45,7 +47,12 @@ export type {
 };
 
 class Platform {
-  provider: {};
+  provider: {
+    custom? : boolean,
+    customClass?: any,
+    discover: boolean,
+    noCustomWrap?: boolean,
+  } | null;
 
   embedURL: string;
 
@@ -53,7 +60,7 @@ class Platform {
 
   response: RequestResponseType = null;
 
-  queryParams: OembedRequestQueryParamsType = {};
+  queryParams: OembedRequestQueryParamsType;
 
   cheerio: any;
 
@@ -70,16 +77,26 @@ class Platform {
 
     this.options = {
       host: options.host ?? null,
-      queryParams: {},
+      queryParams: options.queryParams,
     };
   }
 
   async run(): Promise<OEmbedResponseType> {
-    const response = await makeRequest(`${this.targetURL}?url=${encodeURIComponent(this.embedURL)}`);
+    const qs = queryString.stringify({
+      ...this.queryParams,
+      url: this.embedURL,
+    });
+
+    const response = await makeRequest(`${this.targetURL}?${qs}`);
     this.response = response;
 
     if (response && response.data) {
-      const html = wrapHTML(response.data.html);
+      let { html } = response.data;
+
+      if (this.provider && !this.provider.noCustomWrap) {
+        html = wrapHTML(html, this.queryParams);
+      }
+
       return {
         version: 0.1,
         type: "rich",

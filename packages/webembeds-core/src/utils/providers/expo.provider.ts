@@ -13,7 +13,7 @@ export default class ExpoSnack extends Platform {
     const url = UrlParse(this.embedURL, true);
     const snackId = url.pathname.replace(/^\/|\/$/g, "");
 
-    const { theme = "light" } = url.query;
+    const { theme = "light" } = this.queryParams;
 
     const $ = cheerio.load("<div>");
     $("div").attr("data-snack-id", snackId);

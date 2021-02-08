@@ -2863,6 +2863,7 @@ const oEmbedProviders = [
         url: "https://embed.spotify.com/oembed/",
       },
     ],
+    noCustomWrap: true,
   },
   {
     provider_name: "Spreaker",

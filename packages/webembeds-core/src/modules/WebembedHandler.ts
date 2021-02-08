@@ -20,8 +20,9 @@ type ProviderDetails = {
     custom? : boolean,
     customClass?: any,
     discover: boolean,
+    noCustomWrap: boolean,
   } | null,
-  targetURL: string
+  targetURL: string,
 };
 
 export default class WebembedHandler {
@@ -41,9 +42,9 @@ export default class WebembedHandler {
   options: any;
 
   constructor(incomingURL: string, options: any) {
-    const { queryParams = {}, ...restOfTheOptions } = options;
+    const { queryParams = {} } = options;
     this.embedURL = incomingURL;
-    this.options = restOfTheOptions;
+    this.options = options;
     this.queryParams = queryParams;
     this.providerDetails = this.detectProvider();
   }
@@ -79,7 +80,7 @@ export default class WebembedHandler {
   }
 
   generateOEmbed = (callback: any) => {
-    const { embedURL } = this;
+    const { embedURL, queryParams } = this;
     const { provider } = this.providerDetails;
 
     if (provider && provider.custom) {
@@ -87,7 +88,7 @@ export default class WebembedHandler {
       return;
     }
 
-    oembed.fetch(embedURL, { format: "json", maxwidth: 800, ...this.queryParams }, (error: any, result: OEmbedResponseType): any => {
+    oembed.fetch(embedURL, { format: "json", ...queryParams }, (error: any, result: OEmbedResponseType): any => {
       if (error) {
         callback(true);
         return;
@@ -99,7 +100,6 @@ export default class WebembedHandler {
   // eslint-disable-next-line no-async-promise-executor
   generateManually = async () => new Promise(async (resolve, reject) => {
     const { provider, targetURL } = this.providerDetails;
-
     const { embedURL, queryParams } = this;
 
     if (!provider || !targetURL) {
@@ -107,7 +107,7 @@ export default class WebembedHandler {
     }
 
     // This should fetch an oembed response
-    if (provider && provider.custom) {
+    if (provider && provider.custom && provider.customClass) {
       const CustomClass = provider.customClass;
       this.platform = new CustomClass({
         provider, targetURL, embedURL, queryParams, options: this.options,
@@ -117,6 +117,7 @@ export default class WebembedHandler {
         provider, targetURL, embedURL, queryParams, options: this.options,
       });
     }
+
     const finalResponse = await this.platform.run();
     return resolve(finalResponse);
   })
@@ -168,3 +169,7 @@ export default class WebembedHandler {
     return { output: null, error: true };
   }
 }
+
+export type {
+  ProviderDetails,
+};
