@@ -15,21 +15,13 @@ export default class ExpoSnack extends Platform {
 
     const { theme = "light" } = this.queryParams;
 
-    const $ = cheerio.load("<div>");
-    $("div").attr("data-snack-id", snackId);
-    $("div").attr("data-snack-platform", "web");
-    $("div").attr("data-snack-preview", "true");
-    $("div").attr("style", "overflow:hidden;background:#F9F9F9;border:1px solid var(--color-border);border-radius:4px;height:505px;width:100%");
-    $("div").attr("data-snack-theme", theme);
-
-    $("body").append("<script>");
-    $("script").attr("src", "https://snack.expo.io/embed.js");
+    const html = `<div data-snack-id="${snackId}" data-snack-platform="web" data-snack-preview="true" data-snack-theme="${theme}" style="overflow:hidden;background:#fafafa;border:1px solid rgba(0,0,0,.08);border-radius:4px;height:505px;width:100%"></div><script async src="https://snack.expo.io/embed.js"></script><script>if(typeof ExpoSnack !== "undefined"){ ExpoSnack.initialize(); }</script>`
 
     return {
       version: 0.1,
       type: "rich",
       title: "Expo",
-      html: $.html(),
+      html,
     };
   }
 }
