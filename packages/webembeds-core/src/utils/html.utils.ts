@@ -242,6 +242,7 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
     .link-card .link-image {
       display: block;
       width: 300px;
+      height: 230px;
       background-color: #fefefe;
       background-size: cover;
       background-position: center center
@@ -253,21 +254,21 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
         flex-wrap: wrap
       }
       .link-card .link-image {
-        width: 100%;
-        height:255px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
+        width: 100%!important;
+        display: block;
+      }
+      .link-card .link-image img{
+        margin-top: 0!important;
+        margin-bottom: 0!important;
       }
       .link-card .link-content {
-        width: 100%
+        width: 100%!important;
       }
     }
 
     @media (max-width:425px) {
       .link-card .link-image {
         width: 100%;
-        height:255px;
       }
     }
 		</style>
@@ -277,8 +278,8 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
 		</head>
 		<body>
 			<a href="${data["og:url"]}" target="_blank" class="link-card">
-        <div class="link-image">
-          <img src="${coverImage}?w=1600&h=840&fit=crop&crop=entropy&auto=format,enhance&q=60" />
+        <div class="link-image" style="background-image: url('${coverImage}?w=1600&h=840&fit=crop&crop=entropy&auto=format,enhance&q=60')">
+          <!-- <img src="${coverImage}?w=1600&h=840&fit=crop&crop=entropy&auto=format,enhance&q=60" /> -->
         </div>
 				<div class="link-content">
 					<span class="big-text">${data["og:title"]}</span>
