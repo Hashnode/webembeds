@@ -4,12 +4,15 @@ export default class Twitch extends Platform {
   // eslint-disable-next-line no-useless-constructor
 
   run = async (): Promise<OEmbedResponseType> => {
-    const { host = null } = this.options;
+    const { host } = this.options;
 
-    let parentURL = "localhost";
+    let parentURL = host || "localhost";
 
-    if (host) {
-      parentURL = host.indexOf("localhost") !== -1 ? "localhost" : host;
+    try {
+      const url = new URL(parentURL);
+      parentURL = `${url.hostname}`;
+    } catch (error) {
+      parentURL = "localhost";
     }
 
     try {
