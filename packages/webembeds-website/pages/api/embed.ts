@@ -1,7 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import UrlParse from "url-parse";
-
-const webembed = require("@webembeds/core");
+import webembed from "@webembeds/core";
 
 type EmbedRequest = {
   url?: string
@@ -15,7 +13,7 @@ type CustomResponse = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<CustomResponse>) {
   const { url = "", ...restOfTheQueryParams }: EmbedRequest = req.query;
-
+  
   const embedURL = decodeURIComponent(url);
 
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,8 +24,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   // Twitch needs a parent url where the embed is being used.
   const host = req.headers.host;
 
-  const embedResponse = await webembed.default(embedURL, { 
-    host: host,
+  const embedResponse = await webembed(embedURL, { 
+    host,
     queryParams: {
       ...restOfTheQueryParams,
     }

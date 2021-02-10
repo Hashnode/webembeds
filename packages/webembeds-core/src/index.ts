@@ -1,11 +1,11 @@
 import WebembedHandler from "./modules/WebembedHandler";
 
 type WebEmbedInitOptions = {
-  host: string | null,
+  host?: string | null,
   queryParams: {},
 };
 
-async function init(incomingURL: string, options?: WebEmbedInitOptions) {
+function init(incomingURL: string, options?: WebEmbedInitOptions) {
   try {
     // eslint-disable-next-line no-new
     new URL(incomingURL);

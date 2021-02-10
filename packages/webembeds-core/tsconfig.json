@@ -15,6 +15,7 @@
     "jsx": "preserve",
     "outDir": "./build",
     "sourceMap": true,
+    "declaration": true,
     "typeRoots": ["./types", "node_modules/@types"],
   },
   "include": ["./src/**/*"],

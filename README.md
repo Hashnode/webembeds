@@ -40,3 +40,4 @@
 
 TODO:  
 [-] Add commitizen: https://www.npmjs.com/package/commitizen
+[-] Add `.npmignore`

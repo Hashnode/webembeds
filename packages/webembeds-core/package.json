@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "build/bundle.js",
   "license": "MIT",
+  "types": "build/index.d.ts",
   "scripts": {
     "watch": "NODE_ENV=development node_modules/.bin/webpack --watch",
     "build": "NODE_ENV=production node_modules/.bin/webpack"
