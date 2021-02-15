@@ -12,7 +12,8 @@
     "website:start": "yarn workspace @webembeds/website start",
     "website:build": "yarn workspace @webembeds/website build",
     "core:watch": "yarn workspace @webembeds/core watch",
-    "core:build": "yarn workspace @webembeds/core build"
+    "core:build": "yarn workspace @webembeds/core build",
+    "build-all": "yarn core:build && yarn website:build"
   },
   "dependencies": {
     "axios": "^0.21.1"
