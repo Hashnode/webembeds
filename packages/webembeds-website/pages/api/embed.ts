@@ -1,15 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import webembed from "@webembeds/core";
 
-type EmbedRequest = {
-  url?: string
-}
-
-type CustomResponse = {
-  data: {},
-  error?: boolean | true,
-  message?: string | "",
-}
+import type { EmbedRequest, CustomResponse } from "../../types";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<CustomResponse>) {
   const { url = "", ...restOfTheQueryParams }: EmbedRequest = req.query;

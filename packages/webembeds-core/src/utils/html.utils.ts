@@ -3,6 +3,7 @@ import request from "request";
 import urlMetadata from "url-metadata";
 import cheerio from "cheerio";
 import fetch from "node-fetch";
+import type { CustomAtrributes } from "../types";
 
 // interface MetaTagType {
 //   name: string,
@@ -74,12 +75,6 @@ export const extractLinkTags = ($: any) => {
 //     custom: {},
 //   };
 // };
-
-type CustomAtrributes = {
-	height?: number | string;
-	width?: number | string;
-	className?: string;
-};
 
 export const wrapHTML = (htmlContent: string, customAtrributes: CustomAtrributes = {}) => {
   const $ = cheerio.load(htmlContent);

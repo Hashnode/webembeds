@@ -1,9 +1,5 @@
 import WebembedHandler from "./modules/WebembedHandler";
-
-type WebEmbedInitOptions = {
-  host?: string | null,
-  queryParams: {},
-};
+import type { WebEmbedInitOptions } from "./types";
 
 function init(incomingURL: string, options?: WebEmbedInitOptions) {
   try {
@@ -21,7 +17,5 @@ function init(incomingURL: string, options?: WebEmbedInitOptions) {
 
   return handler.generateResponse();
 }
-
-export type { WebEmbedInitOptions };
 
 export default init;

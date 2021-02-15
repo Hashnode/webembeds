@@ -1,4 +1,5 @@
-import Platform, { OEmbedResponseType, PlatformType } from "../../modules/Platform";
+import Platform from "../../modules/Platform";
+import type { OEmbedResponseType, PlatformType } from "../../types";
 
 export default class Glitch extends Platform {
   // eslint-disable-next-line no-useless-constructor

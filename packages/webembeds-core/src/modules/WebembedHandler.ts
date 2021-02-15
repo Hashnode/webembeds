@@ -1,29 +1,14 @@
-import UrlParse from "url-parse";
 import oembed from "oembed";
 import tryEach from "async/tryEach";
-import Platform, { OEmbedResponseType } from "./Platform";
+import Platform from "./Platform";
 import oEmbedProviders from "../utils/providers/oembed.providers";
 import { getMetaData } from "../utils/requestHandler";
 import { wrapFallbackHTML } from "../utils/html.utils";
 
-/* eslint-disable camelcase */
-// eslint-disable-next-line no-unused-vars
-type EmbedErrorType = {
-  type: "request-error",
-  html?: string | null,
-  message: string,
-  code?: number,
-};
-
-type ProviderDetails = {
-  provider: {
-    custom? : boolean,
-    customClass?: any,
-    discover: boolean,
-    noCustomWrap: boolean,
-  } | null,
-  targetURL: string,
-};
+import type {
+  OEmbedResponseType,
+  ProviderDetails,
+} from "../types";
 
 export default class WebembedHandler {
   // The main embed URL
@@ -169,7 +154,3 @@ export default class WebembedHandler {
     return { output: null, error: true };
   }
 }
-
-export type {
-  ProviderDetails,
-};

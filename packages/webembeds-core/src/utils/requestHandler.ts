@@ -1,24 +1,7 @@
 import axios from "axios";
 import { info as FastImage } from "fastimage";
 import urlMetaData, { Result } from "url-metadata";
-
-// type RequestResponseType = {
-//   hasError?: boolean | true,
-//   message?: string | "",
-//   data?: {}
-// }
-
-type RequestResponseType = {
-  data: {
-    html: string,
-    width?: number,
-    height?: number,
-  }
-} | null;
-
-export type {
-  RequestResponseType,
-};
+import type { RequestResponseType } from "../types";
 
 export const makeRequest = async (url: string): Promise<RequestResponseType> => {
   try {

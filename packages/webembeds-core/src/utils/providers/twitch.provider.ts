@@ -1,4 +1,5 @@
-import Platform, { OEmbedResponseType } from "../../modules/Platform";
+import Platform from "../../modules/Platform";
+import type { OEmbedResponseType } from "../../types";
 
 export default class Twitch extends Platform {
   // eslint-disable-next-line no-useless-constructor
