@@ -3,7 +3,7 @@ import tryEach from "async/tryEach";
 import Platform from "./Platform";
 import oEmbedProviders from "../utils/providers/oembed.providers";
 import { getMetaData } from "../utils/requestHandler";
-import { wrapFallbackHTML } from "../utils/html.utils";
+import { wrapFallbackHTML, wrapHTML } from "../utils/html.utils";
 
 import type {
   OEmbedResponseType,
@@ -12,7 +12,7 @@ import type {
 
 export default class WebembedHandler {
   // The main embed URL
-  embedURL: string
+  embedURL: string;
 
   finalResponse: {} = {};
 
@@ -78,7 +78,13 @@ export default class WebembedHandler {
         callback(true);
         return;
       }
-      callback(null, result);
+      const final = result;
+
+      if (final && final.html) {
+        final.html = wrapHTML(result);
+      }
+
+      callback(null, final);
     });
   }
 
@@ -134,6 +140,7 @@ export default class WebembedHandler {
   generateOutput = async (): Promise<OEmbedResponseType> => new Promise((resolve, reject) => {
     tryEach([this.generateOEmbed, this.generateManually, this.generateFallback],
       (error: any, results: any): void => {
+        console.log("results", results);
         if (error) {
           reject(error);
         }

@@ -59,7 +59,7 @@ class Platform {
       let { html } = response.data;
 
       if (this.provider && !this.provider.noCustomWrap) {
-        html = wrapHTML(html, this.queryParams);
+        html = wrapHTML(response.data, this.queryParams);
       }
 
       return {

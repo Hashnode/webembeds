@@ -57,7 +57,7 @@ software like Aldus PageMaker including versions of Lorem Ipsum.
 const links = {
   spotify: "https://open.spotify.com/track/3G8o2zm7LaF6eeVuvLlrkJ?si=Sx1sCnhDT6GXqSLIwSLOeQ",
   gist: "https://gist.github.com/theevilhead/7ac2fbc3cda897ebd87dbe9aeac130d6",
-  canva: "https://www.canva.com/design/DAET1m0_11c/jFBlYrKc8CQCb2boU9KC-A/view",
+  canva: "https://www.canva.com/design/DAEWRhUKdvg/view",
   codepen: "https://codepen.io/bsehovac/pen/EMyWVv",
   youtube: "https://www.youtube.com/watch?v=32I0Qso4sDg",
   twitter: "https://twitter.com/hashnode/status/1352525138659430400",
@@ -79,7 +79,7 @@ const links = {
 
 (async function () {
   try {
-    const url = links.expo;
+    const url = links.canva;
     const l = await webembed.default(url, {
       host: "hashnode.com",
       queryParams: {

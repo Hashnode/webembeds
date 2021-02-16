@@ -3,7 +3,7 @@ import request from "request";
 import urlMetadata from "url-metadata";
 import cheerio from "cheerio";
 import fetch from "node-fetch";
-import type { CustomAtrributes } from "../types";
+import type { CustomAtrributes, OEmbedResponseType } from "../types";
 
 // interface MetaTagType {
 //   name: string,
@@ -76,15 +76,26 @@ export const extractLinkTags = ($: any) => {
 //   };
 // };
 
-export const wrapHTML = (htmlContent: string, customAtrributes: CustomAtrributes = {}) => {
-  const $ = cheerio.load(htmlContent);
+export const wrapHTML = (oembedResponse: {
+    html: string,
+    width: number,
+    height: number,
+  }, customAtrributes: CustomAtrributes = {}) => {
+  let html = "";
+
+  if (oembedResponse && oembedResponse.html) {
+    html = oembedResponse.html;
+  }
+
+  const $ = cheerio.load(html);
   const iframe = $("iframe");
 
   const iframeExists = iframe.length > 0;
 
   const { width = "100%", height = "100%" } = customAtrributes;
 
-  // const aspectRatio = Number(width) / Number(height);
+  // const aspectRatio = Number(oembedResponse.width) / Number(oembedResponse.height);
+  const paddingTop = Number(oembedResponse.height) / Number(oembedResponse.width);
 
   // Custom attributes support
   // const { attribs } = $(iframe)[0];
@@ -110,7 +121,7 @@ export const wrapHTML = (htmlContent: string, customAtrributes: CustomAtrributes
     iframe.attr("style", "position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;");
     iframe.attr("class", "webembed-iframe");
     $("iframe").wrap(
-      "<div class=\"webembed-wrapper\" style=\"position: relative;overflow: hidden; padding-top: 56.25%;\"></div>",
+      `<div class="webembed-wrapper" style="position: relative;overflow: hidden; padding-top: ${paddingTop * 100}%;"></div>`,
     );
   }
 
@@ -129,42 +140,41 @@ export const wrapHTML = (htmlContent: string, customAtrributes: CustomAtrributes
  */
 function doRequest(url) {
   return new Promise((resolve, reject) => {
-    request.get({ url, encoding: "binary" }, (
-      error: any,
-      imageResponse: { headers: { [x: string]: any; }; },
-      imageBody: string,
-    ) => {
-      if (error) {
-        return reject(error);
-      }
-      const imageType = imageResponse.headers["content-type"];
-      const base64 = new Buffer(imageBody, "binary").toString("base64");
-      const dataURI = `data:${imageType};base64,${base64}`;
-      const payload = {
-        data: dataURI,
-        isDev: process.env.NODE_ENV === "development",
-      };
-      const hnURL = "https://uploads.hashnode.com/api/upload";
-      const cdnURL = "https://cdn.hashnode.com/";
-      fetch(hnURL, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "Cloudmate-Authorization": process.env.cloudmateKey || "",
-          Accept: "*/*",
-        },
-        body: JSON.stringify(payload),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data.Key) {
-            console.log("No cloudmate key");
-            return;
-          }
-          const imageUrl = cdnURL + data.Key;
-          resolve(imageUrl);
-        });
-    });
+    request.get(
+      { url, encoding: "binary" },
+      (error: any, imageResponse: { headers: { [x: string]: any } }, imageBody: string) => {
+        if (error) {
+          return reject(error);
+        }
+        const imageType = imageResponse.headers["content-type"];
+        const base64 = new Buffer(imageBody, "binary").toString("base64");
+        const dataURI = `data:${imageType};base64,${base64}`;
+        const payload = {
+          data: dataURI,
+          isDev: process.env.NODE_ENV === "development",
+        };
+        const hnURL = "https://uploads.hashnode.com/api/upload";
+        const cdnURL = "https://cdn.hashnode.com/";
+        fetch(hnURL, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            "Cloudmate-Authorization": process.env.cloudmateKey || "",
+            Accept: "*/*",
+          },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (!data.Key) {
+              console.log("No cloudmate key");
+              return;
+            }
+            const imageUrl = cdnURL + data.Key;
+            resolve(imageUrl);
+          });
+      },
+    );
   });
 }
 
@@ -178,7 +188,9 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
     mainURL = "/";
   }
 
-  const description = `${data["og:description"].substring(0, 150)}${data["og:description"].length > 150 ? "..." : ""}`;
+  const description = `${data["og:description"].substring(0, 150)}${
+    data["og:description"].length > 150 ? "..." : ""
+  }`;
 
   return `<html lang="en">
 		<head>
