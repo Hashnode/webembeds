@@ -5,6 +5,8 @@ const links: any = {
 	spotify: "https://open.spotify.com/track/3G8o2zm7LaF6eeVuvLlrkJ?si=Sx1sCnhDT6GXqSLIwSLOeQ",
 	gist: "https://gist.github.com/theevilhead/7ac2fbc3cda897ebd87dbe9aeac130d6",
 	canva: "https://www.canva.com/design/DAET1m0_11c/jFBlYrKc8CQCb2boU9KC-A/view",
+	canva1: "https://www.canva.com/design/DAEWSa9kfIs/view",
+	canva2: "https://www.canva.com/design/DAEWRhUKdvg/view",
 	codepen: "https://codepen.io/bsehovac/pen/EMyWVv",
 	youtube: "https://www.youtube.com/watch?v=32I0Qso4sDg",
 	twitter: "https://twitter.com/hashnode/status/1352525138659430400",
@@ -26,7 +28,8 @@ const links: any = {
 
 function Demo() {
 	const urlRef = useRef<HTMLInputElement>(null);
-	const [result, setResult] = useState<{ output: { html?: string }, error: boolean }>();
+	const [result, setResult] = useState<{ output: { html?: string }, error: boolean } >();
+	const [isLoading, setLoading] = useState(false);
 
 	const handleURL = async (incomingURL?: string) => {
     if (null === urlRef) {
@@ -42,6 +45,9 @@ function Demo() {
 			return;
 		}
 
+		setResult({ output: {}, error: false });
+		setLoading(true);
+
 		// https://webembeds.com
 		const requestURL = `/api/embed?url=${encodeURIComponent(url)}`;
 		const response = await fetch(requestURL, {
@@ -53,6 +59,7 @@ function Demo() {
 		});
     const json = await response.json();
 		setResult(json ? json.data : null);
+		setLoading(false);
 	};
 
 	return (
@@ -83,11 +90,18 @@ function Demo() {
 
 			<br />
 
-      <div className="grid grid-cols-3">
-        <div>
+      <div className="">
+        {/* <div>
           {result ? <div className="h-72 overflow-y-scroll leading-relaxed">{JSON.stringify(result)}</div> : "No result"}
-        </div>
+        </div> */}
         <div className="col-span-2">
+					{
+						isLoading && (
+							<div className="text-center h-96 flex flex-col justify-center items-center">
+								<h2>Loading...</h2>
+							</div>
+						)
+					}
           {result && !result.error ? (
             <div className="px-2" dangerouslySetInnerHTML={{ __html: result.output.html || "" }} />
           ) : null}

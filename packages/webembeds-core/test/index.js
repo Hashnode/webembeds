@@ -21,6 +21,8 @@ software like Aldus PageMaker including versions of Lorem Ipsum.
 %[https://codesandbox.io/s/y2lrywpk21]
 
 %[https://codepen.io/szs/pen/JhgKC]
+canva1: "https://www.canva.com/design/DAEWSa9kfIs/view",
+canva2: "https://www.canva.com/design/DAEWRhUKdvg/view",
 
 %[https://vimeo.com/336812660]
 
