@@ -5,6 +5,8 @@ import cheerio from "cheerio";
 import fetch from "node-fetch";
 import type { CustomAtrributes } from "../types";
 
+const isProd = process.env.NODE_ENV === "production";
+
 // interface MetaTagType {
 //   name: string,
 //   property: string,
@@ -169,8 +171,12 @@ function doRequest(url) {
 }
 
 export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
-  const coverImage = (await doRequest(data["og:image"])) || data["og:image"]; // Download the image and upload to our CDN
   let mainURL;
+  let coverImage: any = data["og:image"] || data["og:image"];
+
+  if (isProd) {
+    coverImage = (await doRequest(data["og:image"])) || data["og:image"]; // Download the image and upload to our CDN
+  }
 
   try {
     mainURL = new URL(data["og:url"]).hostname;
