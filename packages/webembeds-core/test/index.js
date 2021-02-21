@@ -79,7 +79,7 @@ const links = {
 
 (async function () {
   try {
-    const url = links.expo;
+    const url = links.fallback;
     const l = await webembed.default(url, {
       host: "hashnode.com",
       queryParams: {

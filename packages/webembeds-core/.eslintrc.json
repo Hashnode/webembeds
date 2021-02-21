@@ -1,6 +1,7 @@
 {
 	"env": {
-		"es6": true
+		"es6": true,
+		"jest": true
 	},
 	"extends": ["airbnb-base"],
 	"parser": "@typescript-eslint/parser",
@@ -8,7 +9,7 @@
 		"ecmaVersion": 12,
     "sourceType": "module"
 	},
-	"plugins": ["@typescript-eslint"],
+	"plugins": ["@typescript-eslint", "jest"],
 	"rules": {
 		"quotes": ["error", "double"],
 		"import/extensions": "off",
