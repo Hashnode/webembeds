@@ -1,4 +1,4 @@
-# Webembeds (⚠️ Not stable yet)
+# Webembeds (⚠️ Not to be used in production yet)
 Built and supported by [Hashnode](https://hashnode.com)
 
 - Checkout demo here https://webembeds.com
