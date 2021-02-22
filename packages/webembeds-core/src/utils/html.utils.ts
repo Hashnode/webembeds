@@ -76,60 +76,32 @@ export const extractLinkTags = ($: any) => {
 //   };
 // };
 
-export const wrapHTML = (oembedResponse: {
-    html: string,
-    width: number,
-    height: number,
-  }, customAtrributes: CustomAtrributes = {}) => {
-  let html = "";
+export const wrapHTML = (oembedResponse: OEmbedResponseType,
+  customAtrributes: CustomAtrributes = {}) => {
+  const { html = "" } = oembedResponse;
 
-  if (oembedResponse && oembedResponse.html) {
-    html = oembedResponse.html;
-  }
-
-  const $ = cheerio.load(html);
+  const $ = cheerio.load(html, { xmlMode: true });
   const iframe = $("iframe");
 
   const iframeExists = iframe.length > 0;
 
   const { width = "100%", height = "100%" } = customAtrributes;
 
-  // const aspectRatio = Number(oembedResponse.width) / Number(oembedResponse.height);
-  const paddingTop = Number(oembedResponse.height) / Number(oembedResponse.width);
-
-  // Custom attributes support
-  // const { attribs } = $(iframe)[0];
-  // const finalAttributesIframe = {
-  //   ...attribs,
-  //   ...customAttributes,
-  //   height: null,
-  //   width: null,
-  // };
-  // iframe.attr(finalAttributesIframe);
-
-  // if (!iframeExists) {
-  //   iframe = $.root().wrapInner("<iframe></iframe>");
-  //   iframe = $("iframe");
-  // }
-
-  // return "";
-  // // eslint-disable-next-line quotes
+  const fHeight = Number(oembedResponse.height) > 0 ? Number(oembedResponse.height) : 360;
+  const fWidth = Number(oembedResponse.width) > 0 ? Number(oembedResponse.width) : 640;
+  const paddingTop = fHeight / fWidth;
 
   if (iframeExists) {
     iframe.attr("width", String(width));
     iframe.attr("height", String(height));
+
     iframe.attr("style", "position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;");
     iframe.attr("class", "webembed-iframe");
+
     $("iframe").wrap(
       `<div class="webembed-wrapper" style="position: relative;overflow: hidden; padding-top: ${paddingTop * 100}%;"></div>`,
     );
   }
-
-  // const iframeContent = $("iframe").html();
-
-  // if (!iframeExists) {
-  //   $("iframe").attr("srcdoc", iframeContent);
-  // }
 
   return $.html();
 };

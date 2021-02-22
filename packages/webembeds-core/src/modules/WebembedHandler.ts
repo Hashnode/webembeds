@@ -68,10 +68,12 @@ export default class WebembedHandler {
     const { embedURL, queryParams } = this;
     const { provider } = this.providerDetails;
 
-    if (provider && provider.custom) {
+    if (!provider || (provider && provider.custom)) {
       callback(true);
       return;
     }
+
+    const { noCustomWrap = false } = provider;
 
     oembed.fetch(embedURL, { format: "json", ...queryParams }, (error: any, result: OEmbedResponseType): any => {
       if (error) {
@@ -80,8 +82,8 @@ export default class WebembedHandler {
       }
       const final = result;
 
-      if (final && final.html) {
-        final.html = wrapHTML(result);
+      if (final && final.html && !noCustomWrap) {
+        final.html = wrapHTML(final);
       }
 
       callback(null, final);
@@ -89,12 +91,12 @@ export default class WebembedHandler {
   }
 
   // eslint-disable-next-line no-async-promise-executor
-  generateManually = async () => new Promise(async (resolve, reject) => {
+  generateManually = async () => {
     const { provider, targetURL } = this.providerDetails;
     const { embedURL, queryParams } = this;
 
     if (!provider || !targetURL) {
-      return reject();
+      throw new Error();
     }
 
     // This should fetch an oembed response
@@ -110,8 +112,8 @@ export default class WebembedHandler {
     }
 
     const finalResponse = await this.platform.run();
-    return resolve(finalResponse);
-  })
+    return finalResponse;
+  }
 
   // Generate a common fallback here by scraping for the common metadata from the platform
   // Use this.platform to generate fallback as it already has a response object
@@ -137,10 +139,10 @@ export default class WebembedHandler {
         - Try generating fallback cover with the response details
       If this fails too, return a fatal error
    */
-  generateOutput = async (): Promise<OEmbedResponseType> => new Promise((resolve, reject) => {
+  // eslint-disable-next-line max-len
+  generateOutput = async (): Promise<OEmbedResponseType | null> => new Promise((resolve, reject) => {
     tryEach([this.generateOEmbed, this.generateManually, this.generateFallback],
       (error: any, results: any): void => {
-        console.log("results", results);
         if (error) {
           reject(error);
         }

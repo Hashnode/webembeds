@@ -19,15 +19,24 @@ type OEmbedResponseType = {
   // If this parameter is present, thumbnail_url and thumbnail_width must also be present.
   thumbnail_height?: string,
   html?: string,
-} | null;
+  width?: number,
+  height?: number,
+};
+
+type WebEmbedInitOptions = {
+  host?: string | null,
+  queryParams: {},
+};
+
+type Provider = {
+  custom? : boolean,
+  customClass?: any,
+  discover: boolean,
+  noCustomWrap: boolean,
+}
 
 type PlatformType = {
-  provider: {
-    custom? : boolean,
-    customClass?: any,
-    discover: boolean,
-    noCustomWrap: boolean,
-  } | null,
+  provider: Provider | null,
   targetURL?: string,
   embedURL: string,
   options: WebEmbedInitOptions,
@@ -42,26 +51,12 @@ type EmbedErrorType = {
 };
 
 type ProviderDetails = {
-  provider: {
-    custom? : boolean,
-    customClass?: any,
-    discover: boolean,
-    noCustomWrap: boolean,
-  } | null,
+  provider: Provider | null,
   targetURL: string,
 };
 
-type WebEmbedInitOptions = {
-  host?: string | null,
-  queryParams: {},
-};
-
 type RequestResponseType = {
-  data: {
-    html: string,
-    width?: number,
-    height?: number,
-  }
+  data: OEmbedResponseType
 } | null;
 
 type APIResponse = {
@@ -86,4 +81,5 @@ export type {
   RequestResponseType,
   APIResponse,
   CustomAtrributes,
+  Provider,
 };

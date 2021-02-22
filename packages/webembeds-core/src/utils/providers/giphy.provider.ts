@@ -8,7 +8,7 @@ export default class Giphy extends Platform {
     super(args);
   }
 
-  run = async (): Promise<OEmbedResponseType> => {
+  run = async (): Promise<OEmbedResponseType | null> => {
     const response = await makeRequest(`${this.targetURL}?url=${encodeURIComponent(this.embedURL)}`);
     const data = response ? response.data : null;
 
