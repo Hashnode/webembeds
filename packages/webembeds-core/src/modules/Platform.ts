@@ -46,7 +46,7 @@ class Platform {
     };
   }
 
-  async run(): Promise<OEmbedResponseType> {
+  async run(): Promise<OEmbedResponseType | null> {
     const qs = queryString.stringify({
       ...this.queryParams,
       url: this.embedURL,
@@ -59,7 +59,7 @@ class Platform {
       let { html } = response.data;
 
       if (this.provider && !this.provider.noCustomWrap) {
-        html = wrapHTML(html, this.queryParams);
+        html = wrapHTML(response.data, this.queryParams);
       }
 
       return {
@@ -69,6 +69,7 @@ class Platform {
         html,
       };
     }
+
     return null;
   }
 }

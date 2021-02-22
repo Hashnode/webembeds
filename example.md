@@ -33,3 +33,9 @@
 %[https://twitter.com/hashnode/status/1352525138659430400]
 
 %[https://hashnode.com]
+
+%[https://www.canva.com/design/DAEWSa9kfIs/view]
+
+%[https://www.canva.com/design/DAEWRhUKdvg/view]
+
+%[https://codepen.io/szs/pen/JhgKC]

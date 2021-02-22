@@ -2538,6 +2538,7 @@ const oEmbedProviders = [
         ],
       },
     ],
+    noCustomWrap: true,
   },
   {
     provider_name: "Saooti",

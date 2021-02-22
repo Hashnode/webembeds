@@ -3,7 +3,7 @@ import tryEach from "async/tryEach";
 import Platform from "./Platform";
 import oEmbedProviders from "../utils/providers/oembed.providers";
 import { getMetaData } from "../utils/requestHandler";
-import { wrapFallbackHTML } from "../utils/html.utils";
+import { wrapFallbackHTML, wrapHTML } from "../utils/html.utils";
 
 import type {
   OEmbedResponseType,
@@ -12,7 +12,7 @@ import type {
 
 export default class WebembedHandler {
   // The main embed URL
-  embedURL: string
+  embedURL: string;
 
   finalResponse: {} = {};
 
@@ -68,27 +68,35 @@ export default class WebembedHandler {
     const { embedURL, queryParams } = this;
     const { provider } = this.providerDetails;
 
-    if (provider && provider.custom) {
+    if (!provider || (provider && provider.custom)) {
       callback(true);
       return;
     }
+
+    const { noCustomWrap = false } = provider;
 
     oembed.fetch(embedURL, { format: "json", ...queryParams }, (error: any, result: OEmbedResponseType): any => {
       if (error) {
         callback(true);
         return;
       }
-      callback(null, result);
+      const final = result;
+
+      if (final && final.html && !noCustomWrap) {
+        final.html = wrapHTML(final);
+      }
+
+      callback(null, final);
     });
   }
 
   // eslint-disable-next-line no-async-promise-executor
-  generateManually = async () => new Promise(async (resolve, reject) => {
+  generateManually = async () => {
     const { provider, targetURL } = this.providerDetails;
     const { embedURL, queryParams } = this;
 
     if (!provider || !targetURL) {
-      return reject();
+      throw new Error();
     }
 
     // This should fetch an oembed response
@@ -104,8 +112,8 @@ export default class WebembedHandler {
     }
 
     const finalResponse = await this.platform.run();
-    return resolve(finalResponse);
-  })
+    return finalResponse;
+  }
 
   // Generate a common fallback here by scraping for the common metadata from the platform
   // Use this.platform to generate fallback as it already has a response object
@@ -131,7 +139,8 @@ export default class WebembedHandler {
         - Try generating fallback cover with the response details
       If this fails too, return a fatal error
    */
-  generateOutput = async (): Promise<OEmbedResponseType> => new Promise((resolve, reject) => {
+  // eslint-disable-next-line max-len
+  generateOutput = async (): Promise<OEmbedResponseType | null> => new Promise((resolve, reject) => {
     tryEach([this.generateOEmbed, this.generateManually, this.generateFallback],
       (error: any, results: any): void => {
         if (error) {

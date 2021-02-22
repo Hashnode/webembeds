@@ -6,9 +6,9 @@ import type { EmbedRequest } from "../../types";
 export default async function handler(req: NextApiRequest, res: NextApiResponse<string>) {
   const { url = "" }: EmbedRequest = req.query;
   const embedURL = decodeURIComponent(url);
-  res.setHeader("Content-Type", "text/html");
   const embedResponse = await webembed(embedURL);
-
+  
+  res.setHeader("Content-Type", "text/html; charset='utf-8'");
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   if (embedResponse.output) {

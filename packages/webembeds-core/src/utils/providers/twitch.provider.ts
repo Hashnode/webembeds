@@ -4,7 +4,7 @@ import type { OEmbedResponseType } from "../../types";
 export default class Twitch extends Platform {
   // eslint-disable-next-line no-useless-constructor
 
-  run = async (): Promise<OEmbedResponseType> => {
+  run = async (): Promise<OEmbedResponseType | null> => {
     const { host } = this.options;
 
     let parentURL = host || "localhost";
