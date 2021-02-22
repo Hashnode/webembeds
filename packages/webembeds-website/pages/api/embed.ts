@@ -14,7 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   res.setHeader("Cache-Control", "s-maxage=2592000");
 
   // Twitch needs a parent url where the embed is being used.
-  const host = req.headers.referer;
+  
+  const host = req.headers.host;
   
   const embedResponse = await webembed(embedURL, { 
     host,

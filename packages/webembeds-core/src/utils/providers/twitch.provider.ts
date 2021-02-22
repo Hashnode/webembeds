@@ -6,11 +6,10 @@ export default class Twitch extends Platform {
 
   run = async (): Promise<OEmbedResponseType | null> => {
     const { host } = this.options;
-
     let parentURL = host || "localhost";
 
     try {
-      const url = new URL(parentURL);
+      const url = new URL(`https://${parentURL}`);
       parentURL = `${url.hostname}`;
     } catch (error) {
       parentURL = "localhost";
