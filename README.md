@@ -7,8 +7,6 @@ This project started to replace Hashnode's embedding logic and rely on something
 
 ## Current status
 
-#### Supported platforms
-
 ## Contributing
 - We will be working mainly on `development` branch and the `master` branch remains untouched.
 - Create feature branches checked out from `development` branch and raise PR against `development` once done.

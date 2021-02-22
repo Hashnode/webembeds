@@ -14,12 +14,14 @@
     "core:watch": "yarn workspace @webembeds/core watch",
     "core:build": "yarn workspace @webembeds/core build",
     "build-all": "yarn core:build && yarn website:build",
-    "test": "yarn workspace @webembeds/core test"
+    "test": "yarn workspace @webembeds/core test",
+    "commit": "git-cz"
   },
   "dependencies": {
     "axios": "^0.21.1"
   },
   "devDependencies": {
+    "commitizen": "^4.2.3",
     "cz-conventional-changelog": "^3.3.0",
     "typescript": "^4.1.3"
   },

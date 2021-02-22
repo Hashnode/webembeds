@@ -24,11 +24,10 @@ const webembed = require("../build/bundle");
 ```
 
 ## TODO
-[] Add minimal tests to make sure embeds are working fine.
-[] Cleanup package remove/replace unwanted npm packages
+[-] Add minimal tests to make sure embeds are working fine. (WIP)
 
 ## Future plans
-[] Ship `@webembeds/core` as a separate npm package.
+[-] Ship `@webembeds/core` as a separate npm package.
 
 
 ## Contributing
