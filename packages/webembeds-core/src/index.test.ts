@@ -28,6 +28,6 @@ test.concurrent.each(Object.values(links))("Testing %s embed", async (input, out
   } catch (error) {
     console.log("final", JSON.stringify(error));
   }
-})
+});
 
 export {};

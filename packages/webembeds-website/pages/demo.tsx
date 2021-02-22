@@ -4,7 +4,7 @@ import Loader from "../components/Loader";
 
 const links: any = {
 	spotify: "https://open.spotify.com/track/3G8o2zm7LaF6eeVuvLlrkJ?si=Sx1sCnhDT6GXqSLIwSLOeQ",
-	gist: "https://gist.github.com/theevilhead/7ac2fbc3cda897ebd87dbe9aeac130d6",
+	// gist: "https://gist.github.com/theevilhead/7ac2fbc3cda897ebd87dbe9aeac130d6",
 	canva: "https://www.canva.com/design/DAET1m0_11c/jFBlYrKc8CQCb2boU9KC-A/view",
 	canva1: "https://www.canva.com/design/DAEWSa9kfIs/view",
 	canva2: "https://www.canva.com/design/DAEWRhUKdvg/view",
@@ -27,7 +27,6 @@ const links: any = {
 
 function Demo() {
 	const urlRef = useRef<HTMLInputElement>(null);
-	const embedRef = useRef<HTMLInputElement>(null);
 	const [result, setResult] = useState<{ output: { html?: string }; error: boolean }>();
 	const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -51,7 +50,6 @@ function Demo() {
 
 		setLoading(true);
 
-		// https://webembeds.com
 		const requestURL = `/api/embed?url=${encodeURIComponent(url)}`;
 		const response = await fetch(requestURL, {
 			method: "GET",
@@ -82,7 +80,6 @@ function Demo() {
 					<div
 						className="shadow-2xl p-2 bg-white rounded-sm border border-gray-200"
 						dangerouslySetInnerHTML={{ __html: result.output.html || "" }}
-						// ref={embedRef}
 					/>
 				) : null}
 				{result && result.error ? "Something went wrong" : ""}
