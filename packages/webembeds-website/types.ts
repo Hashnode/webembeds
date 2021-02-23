@@ -1,5 +1,6 @@
 type EmbedRequest = {
-  url?: string
+  url?: string,
+  customHost?: string,
 }
 
 type CustomResponse = {
