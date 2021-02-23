@@ -14,7 +14,6 @@ The build file can be imported elsewhere and used directly
 const webembed = require("../build/bundle");
 (async function () {
   try {
-    const url = links.expo;
     const output = await webembed.default("https://www.youtube.com/watch?v=32I0Qso4sDg");
     console.log("Embed output", output);
   } catch (error) {
@@ -28,7 +27,6 @@ const webembed = require("../build/bundle");
 
 ## Future plans
 [-] Ship `@webembeds/core` as a separate npm package.
-
 
 ## Contributing
 Please check this README.md on instructions to contributing. https://github.com/Hashnode/webembeds/blob/master/README.md

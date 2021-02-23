@@ -1,0 +1,19 @@
+import React from "react";
+import Document, { Html, Head, Main, NextScript } from "next/document";
+
+class CustomDocument extends Document {
+	render() {
+		return (
+			<Html>
+				<Head />
+				<body>
+					<Main />
+					<NextScript />
+          <script async defer src="/js/buttons.js"></script>
+				</body>
+			</Html>
+		);
+	}
+}
+
+export default CustomDocument;

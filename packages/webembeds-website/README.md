@@ -1,7 +1,7 @@
 # webembeds-website
 Built and supported by [Hashnode](https://hashnode.com)
 
-- Checkout demo here https://webembeds.com
+- Checkout demo here https://webembeds.com/demo
 
 This package deals with the website. Right now website only hosts a demo of webembeds.  
 
