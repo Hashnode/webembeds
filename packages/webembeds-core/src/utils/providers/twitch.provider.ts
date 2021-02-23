@@ -1,5 +1,6 @@
 import Platform from "../../modules/Platform";
 import type { OEmbedResponseType } from "../../types";
+import { wrapHTML } from "../html.utils";
 
 export default class Twitch extends Platform {
   // eslint-disable-next-line no-useless-constructor
@@ -38,12 +39,21 @@ export default class Twitch extends Platform {
         href += `&channel=${channelName}`;
       }
 
-      return {
+      const response: OEmbedResponseType = {
         version: 0.1,
         type: "rich",
         title: "Twitch",
         html: `<iframe src="${href}" frameborder="0" allowfullscreen="true" 
         scrolling="no" height="378" width="620" allow="encrypted-media"></iframe>`,
+      };
+
+      const wrappedHTML = wrapHTML(response, {});
+
+      return {
+        version: 0.1,
+        type: "rich",
+        title: "Twitch",
+        html: wrappedHTML,
       };
     } catch (error) {
       return null;

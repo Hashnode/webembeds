@@ -114,7 +114,7 @@ function Demo() {
 
 				<p className="py-4 text-center">Or select from below</p>
 
-				<div>
+				<div className="text-center">
 					{Object.keys(links).map((key, index) => {
 						return (
 							<button
