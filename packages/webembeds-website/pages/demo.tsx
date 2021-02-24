@@ -51,7 +51,7 @@ function Demo() {
 		setLoading(true);
 		setResult(null);
 
-		const requestURL = `/api/embed?url=${encodeURIComponent(url)}`;
+		const requestURL = `/api/embed?url=${encodeURIComponent(url)}&customHost=${encodeURIComponent(window.location.hostname)}`;
 		const response = await fetch(requestURL, {
 			method: "GET",
 			headers: {
