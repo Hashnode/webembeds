@@ -3,13 +3,13 @@ import React, { useState, useEffect, useRef } from "react";
 import Loader from "../components/Loader";
 
 const links: any = {
-	// spotify: "https://open.spotify.com/track/3G8o2zm7LaF6eeVuvLlrkJ?si=Sx1sCnhDT6GXqSLIwSLOeQ",
-	// gist: "https://gist.github.com/theevilhead/7ac2fbc3cda897ebd87dbe9aeac130d6",
+	spotify: "https://open.spotify.com/track/3G8o2zm7LaF6eeVuvLlrkJ?si=Sx1sCnhDT6GXqSLIwSLOeQ",
+	gist: "https://gist.github.com/theevilhead/908d9f761a82809a33fcede797d06334",
 	// canva1: "https://www.canva.com/design/DAEWSa9kfIs/view",
 	// canva2: "https://www.canva.com/design/DAEWRhUKdvg/view",
-	// twitter: "https://twitter.com/hashnode/status/1352525138659430400",
-	// expo: "https://snack.expo.io/@girishhashnode/unnamed-snack",
-	// runkit: "https://runkit.com/runkit/welcome",
+	twitter: "https://twitter.com/hashnode/status/1352525138659430400",
+	expo: "https://snack.expo.io/@girishhashnode/unnamed-snack",
+	runkit: "https://runkit.com/runkit/welcome",
 	canva: "https://www.canva.com/design/DAET1m0_11c/jFBlYrKc8CQCb2boU9KC-A/view",
 	codepen: "https://codepen.io/bsehovac/pen/EMyWVv",
 	youtube: "https://www.youtube.com/watch?v=32I0Qso4sDg",
@@ -29,8 +29,46 @@ function Demo() {
 	const urlRef = useRef<HTMLInputElement>(null);
 	const [result, setResult] = useState<{ output?: { html?: string }; error: boolean } | null>();
 	const [isLoading, setLoading] = useState<boolean>(false);
+	let parentNode: HTMLElement | null = null;
 
 	useEffect(() => {
+		parentNode = document.getElementById("embed-platform");
+		
+		window.adjustIframeSize = function(id: string, newHeight: string) {
+			const ele = document.getElementById(id);
+			if (!ele) return;
+			ele.style.height = parseInt(newHeight) + "px";
+		}
+
+		// Can be ported to others too
+		window.addEventListener("message", function(e) {
+			if (e.origin !== "https://runkit.com")
+				return;
+		
+			try {
+				var data = JSON.parse(e.data);
+			} catch (e) {
+				return false;
+			}
+		
+			if (data.context !== "iframe.resize") {
+				return false;
+			}
+		
+			var iframe = document.querySelector("iframe[src=\"" + data.src + "\"]");
+		
+			if (!iframe) {
+				return false;
+			}
+		
+			iframe.width = "100%";
+			
+			if (data.height) {
+				console.log("height", data.height)
+				iframe.height = data.height;
+			}
+		});
+
 		handleURL(links.vimeo);
 	}, []);
 
@@ -38,10 +76,17 @@ function Demo() {
 		if (null === urlRef) {
 			return;
 		}
+		
 		if (null === urlRef.current) {
 			return;
 		}
 
+		parentNode = document.getElementById("embed-platform");
+		if (!parentNode) {
+			return;
+		}
+		
+		console.log("parentNode", parentNode)
 		const url = incomingURL || (urlRef !== null ? urlRef.current.value : null);
 
 		if (!url) {
@@ -50,6 +95,7 @@ function Demo() {
 
 		setLoading(true);
 		setResult(null);
+		parentNode.innerHTML = "";
 
 		const requestURL = `/api/embed?url=${encodeURIComponent(url)}&customHost=${encodeURIComponent(window.location.hostname)}`;
 		const response = await fetch(requestURL, {
@@ -62,7 +108,53 @@ function Demo() {
 		const json = await response.json();
 
 		setLoading(false);
-		setResult(json ? json.data : null);
+
+		if(parentNode && !url.includes("gist.github.com")) {
+			parentNode.innerHTML = json.data.output.html;
+			Array.from(parentNode.querySelectorAll("script")).forEach( async oldScript => {
+					const newScript = document.createElement("script");
+					Array.from(oldScript.attributes).forEach( attr => newScript.setAttribute(attr.name, attr.value) );
+					
+					if (oldScript.innerHTML) {
+							newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+					}
+
+					if (oldScript && oldScript.parentNode) {
+						oldScript.parentNode.replaceChild(newScript, oldScript);
+					}
+			});
+		} else {
+			 
+			const gistFrame = document.createElement("iframe");
+			gistFrame.setAttribute("width", "100%");
+			gistFrame.setAttribute("frameBorder", "0");
+			gistFrame.setAttribute("scrolling", "no");
+			gistFrame.id = `gist-${new Date().getTime()}`;
+			
+			parentNode.innerHTML = "";
+			parentNode.appendChild(gistFrame);
+			
+			// Create the iframe's document
+			const gistFrameHTML = `<html><body onload="parent.adjustIframeSize('${gistFrame.id}', document.body.scrollHeight)">${json.data.output.html}</body></html>`;
+			
+			// Set iframe's document with a trigger for this document to adjust the height
+			let gistFrameDoc = gistFrame.document;
+			
+			if (gistFrame.contentDocument) {
+					gistFrameDoc = gistFrame.contentDocument;
+			} else if (gistFrame.contentWindow) {
+					gistFrameDoc = gistFrame.contentWindow.document;
+			}
+
+			if (!gistFrameDoc) {
+					return;
+			}
+			gistFrameDoc.open();
+			gistFrameDoc.writeln(gistFrameHTML);
+			gistFrameDoc.close();
+		}
+
+		// setResult(json ? json.data : null);
 		setLoading(false);
 	};
 
@@ -82,12 +174,13 @@ function Demo() {
           {result ? <div className="h-72 overflow-y-scroll leading-relaxed">{JSON.stringify(result)}</div> : "No result"}
         </div> */}
 				{isLoading ? <Loader /> : null}
-				{result && !result.error && !isLoading ? (
+				{/* {result && !result.error && !isLoading ? ( */}
 					<div
+						id="embed-platform"
 						className="shadow-2xl p-2 bg-white rounded-sm border border-gray-200"
-						dangerouslySetInnerHTML={{ __html: (result.output && result.output.html) ? result.output.html : "" }}
+						// dangerouslySetInnerHTML={{ __html: (result.output && result.output.html) ? result.output.html : "" }}
 					/>
-				) : null}
+				{/* ) : null} */}
 				{result && result.error ? "Something went wrong" : ""}
 			</div>
 

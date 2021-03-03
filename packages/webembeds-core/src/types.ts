@@ -3,8 +3,8 @@ type OembedRequestQueryParamsType = { [key: string]: string | number };
 /* eslint-disable camelcase */
 // eslint-disable-next-line no-unused-vars
 type OEmbedResponseType = {
-  type: "photo" | "video" | "link" | "rich",
-  version: 0.1,
+  type: string,
+  version: number,
   title: string,
   author_name?: string,
   author_url?: string,
@@ -26,6 +26,7 @@ type OEmbedResponseType = {
 type WebEmbedInitOptions = {
   host?: string | null,
   queryParams: {},
+  webembedWrap: boolean | undefined,
 };
 
 type Provider = {

@@ -34,6 +34,12 @@ export default class WebembedHandler {
     this.providerDetails = this.detectProvider();
   }
 
+  /**
+   * @desc Goes through providers list and tries to find respective provider for incoming embedURL
+   * @returns {object} providerDetails.provider the respective provider object from list
+   * @returns {targetURL} providerDetails.targetURL the final url where the request
+   *  must be made with embedURL, if no targetURL found, it will be the embedURL itself.
+   */
   detectProvider = () => {
     let destinationProvider: { endpoints: any; } | null = null;
     let targetURL = null; // The endpoint that the embedURL should be queried upon

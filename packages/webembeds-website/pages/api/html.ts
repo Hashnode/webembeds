@@ -13,13 +13,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   if (embedResponse.output) {
     if (embedResponse.output.html) {
-      return res.send(embedResponse.output.html);
+      return res.send(`<html><body>${embedResponse.output.html}</body></html>`);
     }
-  
-    if (embedResponse.output.provider_url) {
-      return res.send(`<iframe src="${embedResponse.output.provider_url}"/>`);
-    }
-  }
-  
+  }  
+
   res.send("Not available");
 }

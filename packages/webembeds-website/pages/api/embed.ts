@@ -17,9 +17,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const embedResponse = await webembed(embedURL, { 
     host: decodeURIComponent(customHost),
+    webembedWrap: true,
     queryParams: {
       ...restOfTheQueryParams,
-    }
+    },
   });
   res.json({ data: embedResponse });
 }

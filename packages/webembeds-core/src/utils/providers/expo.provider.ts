@@ -16,7 +16,7 @@ export default class ExpoSnack extends Platform {
 
     const { theme = "light" } = this.queryParams;
 
-    const html = `<div data-snack-id="${snackId}" data-snack-platform="web" data-snack-preview="true" data-snack-theme="${theme}" style="overflow:hidden;background:#fafafa;border:1px solid rgba(0,0,0,.08);border-radius:4px;height:505px;width:100%"></div><script async src="https://snack.expo.io/embed.js"></script><script>if(typeof ExpoSnack !== "undefined"){ ExpoSnack.initialize(); }</script>`
+    const html = `<div data-snack-id="${snackId}" data-snack-platform="web" data-snack-preview="true" data-snack-theme="${theme}" style="overflow:hidden;background:#fafafa;border:1px solid rgba(0,0,0,.08);border-radius:4px;height:505px;width:100%"></div><script async src="https://snack.expo.io/embed.js"></script><script>if(typeof ExpoSnack !== "undefined"){ ExpoSnack.initialize(); }</script>`;
 
     return {
       version: 0.1,

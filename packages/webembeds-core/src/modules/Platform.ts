@@ -41,8 +41,9 @@ class Platform {
     this.cheerio = cheerio;
 
     this.options = {
-      host: options.host ?? null,
+      host: options.host || null,
       queryParams: options.queryParams,
+      webembedWrap: options.webembedWrap || false,
     };
   }
 
