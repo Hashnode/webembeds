@@ -1,3 +1,6 @@
+![webembeds logo](https://user-images.githubusercontent.com/6068418/109757639-3080cb00-7c10-11eb-9aa7-b9b640953379.png)
+
+
 # Webembeds 
 
 **(⚠️ Not to be used in production yet)**
