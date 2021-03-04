@@ -4,6 +4,7 @@ type OembedRequestQueryParamsType = { [key: string]: string | number };
 // eslint-disable-next-line no-unused-vars
 type OEmbedResponseType = {
   type: string,
+  url?: string,
   version: number,
   title: string,
   author_name?: string,

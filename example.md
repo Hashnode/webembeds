@@ -37,3 +37,5 @@
 %[https://www.canva.com/design/DAEWSa9kfIs/view]
 
 %[https://www.canva.com/design/DAEWRhUKdvg/view]
+
+%[https://giphy.com/gifs/cbsnews-inauguration-2021-XEMbxm9vl9JIIMcE7M]
