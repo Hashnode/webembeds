@@ -64,7 +64,6 @@ function Demo() {
 			iframe.width = "100%";
 			
 			if (data.height) {
-				console.log("height", data.height)
 				iframe.height = data.height;
 			}
 		});
@@ -86,7 +85,6 @@ function Demo() {
 			return;
 		}
 		
-		console.log("parentNode", parentNode)
 		const url = incomingURL || (urlRef !== null ? urlRef.current.value : null);
 
 		if (!url) {
