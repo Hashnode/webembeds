@@ -1,4 +1,10 @@
-# Webembeds (⚠️ Not to be used in production yet)
+![webembeds logo](https://user-images.githubusercontent.com/6068418/109757639-3080cb00-7c10-11eb-9aa7-b9b640953379.png)
+
+
+# Webembeds 
+
+**(⚠️ Not to be used in production yet)**
+
 Built and supported by [Hashnode](https://hashnode.com)
 
 - Checkout demo here https://webembeds.com/demo
