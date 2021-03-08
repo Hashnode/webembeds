@@ -33,8 +33,12 @@ function Demo() {
 
 	useEffect(() => {
 		parentNode = document.getElementById("embed-platform");
+
+		if (!window) {
+			return;
+		}
 		
-		window.adjustIframeSize = function(id: string, newHeight: string) {
+		(window as any).adjustIframeSize = function(id: string, newHeight: string) {
 			const ele = document.getElementById(id);
 			if (!ele) return;
 			ele.style.height = parseInt(newHeight) + "px";
@@ -55,16 +59,16 @@ function Demo() {
 				return false;
 			}
 		
-			var iframe = document.querySelector("iframe[src=\"" + data.src + "\"]");
+			const iframe: HTMLIFrameElement | null = document.querySelector("iframe[src=\"" + data.src + "\"]");
 		
 			if (!iframe) {
 				return false;
 			}
 		
-			iframe.width = "100%";
+			iframe.setAttribute("width", "100%");
 			
 			if (data.height) {
-				iframe.height = data.height;
+				iframe.setAttribute("height", data.height);
 			}
 		});
 
@@ -136,7 +140,7 @@ function Demo() {
 			const gistFrameHTML = `<html><body onload="parent.adjustIframeSize('${gistFrame.id}', document.body.scrollHeight)">${json.data.output.html}</body></html>`;
 			
 			// Set iframe's document with a trigger for this document to adjust the height
-			let gistFrameDoc = gistFrame.document;
+			let gistFrameDoc = gistFrame.contentWindow?.document;
 			
 			if (gistFrame.contentDocument) {
 					gistFrameDoc = gistFrame.contentDocument;
