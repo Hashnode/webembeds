@@ -225,7 +225,7 @@ function Demo() {
 			</div>
 			<div className="max-w-3xl mx-auto pt-32 pb-4 text-center">
 				Made with ❤️ &nbsp; by{" "}
-				<a href="https://hashnode.com" className="text-blue-700">
+				<a href="https://hashnode.com?source=webembeds" className="text-blue-700">
 					Hashnode
 				</a>
 			</div>
