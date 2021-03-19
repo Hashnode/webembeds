@@ -2,7 +2,6 @@ import { makeRequest } from "../requestHandler";
 import Platform from "../../modules/Platform";
 import type { OEmbedResponseType, PlatformType } from "../../types";
 import { wrapHTML } from "../html.utils";
-import Loom from "./loom.provider";
 
 export default class Giphy extends Platform {
   // eslint-disable-next-line no-useless-constructor
@@ -36,10 +35,7 @@ export default class Giphy extends Platform {
       html,
     };
 
-    const wrappedHTML = wrapHTML(temp, {
-      width: data.width || "100%",
-      height: data.height || "100%",
-    });
+    const wrappedHTML = wrapHTML(temp);
 
     return {
       ...temp,
