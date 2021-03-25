@@ -154,20 +154,23 @@ function doRequest(url) {
 
 export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
   let mainURL;
-  let coverImage: any = data["og:image"] || data["og:image"];
+
+  const desc = data["og:description"] || data.description;
+  let coverImage: any = data["og:image"] || data.image;
 
   if (isProd) {
-    coverImage = (await doRequest(data["og:image"])) || data["og:image"]; // Download the image and upload to our CDN
+    // Download the image and upload to our CDN
+    coverImage = (await doRequest(coverImage)) || coverImage;
   }
 
   try {
-    mainURL = new URL(data["og:url"]).hostname;
+    mainURL = new URL(data["og:url"] || data.url).hostname;
   } catch (error) {
     mainURL = "/";
   }
 
-  const description = `${data["og:description"].substring(0, 150)}${
-    data["og:description"].length > 150 ? "..." : ""
+  const description = `${desc.substring(0, 150)}${
+    desc.length > 150 ? "..." : ""
   }`;
 
   return `<html lang="en">
@@ -259,17 +262,17 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
 		</style>
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-			<title>${data["og:title"]}</title>
+			<title>${data["og:title"] || data.title}</title>
 		</head>
 		<body>
-			<a href="${data["og:url"]}" target="_blank" class="link-card">
+			<a href="${data["og:url"] || data.url}" target="_blank" class="link-card">
         <div class="link-image" style="background-image: url('${coverImage}?w=1600&h=840&fit=crop&crop=entropy&auto=format,enhance&q=60')">
           <!-- <img src="${coverImage}?w=1600&h=840&fit=crop&crop=entropy&auto=format,enhance&q=60" /> -->
         </div>
 				<div class="link-content">
-					<span class="big-text">${data["og:title"]}</span>
+					<span class="big-text">${data["og:title"] || data.title}</span>
 					<span class="small-desc">${description}</span>
-					<span class="small-desc host-name">${mainURL}</span>
+					<span class="small-desc host-name">${mainURL !== "/" ? mainURL : ""}</span>
 				</div>
 			</a>
 		</body>

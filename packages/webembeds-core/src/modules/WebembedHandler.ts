@@ -16,7 +16,11 @@ export default class WebembedHandler {
 
   finalResponse: {} = {};
 
-  queryParams: {} = {};
+  queryParams: {
+    forceFallback: boolean,
+  } = {
+    forceFallback: false,
+  };
 
   platform: any = {};
 
@@ -147,6 +151,16 @@ export default class WebembedHandler {
    */
   // eslint-disable-next-line max-len
   generateOutput = async (): Promise<OEmbedResponseType | null> => new Promise((resolve, reject) => {
+    if (this.queryParams.forceFallback) {
+      tryEach([this.generateFallback],
+        (error: any, results: any): void => {
+          if (error) {
+            return reject(error);
+          }
+          return resolve(results);
+        });
+    }
+
     tryEach([this.generateOEmbed, this.generateManually, this.generateFallback],
       (error: any, results: any): void => {
         if (error) {
