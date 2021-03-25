@@ -26,7 +26,8 @@ export const makeRequest = async (url: string): Promise<RequestResponseType> => 
 // eslint-disable-next-line max-len
 export const getMetaData = (url: string): Promise<Result> => new Promise((resolve, reject) => {
   urlMetaData(url).then(
-    (metadata: urlMetaData.Result) => { // success handler
+    (metadata: urlMetaData.Result) => {
+      // success handler
       // if (!metadata["og:image:width"] || !metadata["og:image:height"]) {
       // FastImage(metadata["og:image"], (error: any, imageData: any): any => {
       //   if (error) {
