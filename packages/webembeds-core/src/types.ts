@@ -35,6 +35,7 @@ type Provider = {
   customClass?: any,
   discover: boolean,
   noCustomWrap: boolean,
+  provider_name: string,
 }
 
 type PlatformType = {

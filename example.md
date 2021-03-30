@@ -39,3 +39,11 @@
 %[https://www.canva.com/design/DAEWRhUKdvg/view]
 
 %[https://giphy.com/gifs/cbsnews-inauguration-2021-XEMbxm9vl9JIIMcE7M]
+
+%[https://www.instagram.com/p/CL8vNB_n_I3/]
+
+%[https://www.facebook.com/barackobama/posts/10158541668386749]
+
+%[https://fb.watch/4yOE3vHgMr]
+
+%[https://www.instagram.com/reel/CMgbGuOgo9l/?igshid=1pty8jxruxsd6]
