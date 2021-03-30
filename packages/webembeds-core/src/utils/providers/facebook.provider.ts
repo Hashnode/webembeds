@@ -1,12 +1,10 @@
-/* eslint-disable camelcase */
 import { makeRequest } from "../requestHandler";
 import Platform from "../../modules/Platform";
 import type { OEmbedResponseType, PlatformType } from "../../types";
-import { wrapHTML } from "../html.utils";
 
 const { FB_APP_TOKEN } = process.env;
 
-export default class Instagram extends Platform {
+export default class Facebook extends Platform {
   hasError: boolean = false;
 
   // eslint-disable-next-line no-useless-constructor

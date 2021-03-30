@@ -46,8 +46,7 @@ function Demo() {
 
 		// Can be ported to others too
 		window.addEventListener("message", function(e) {
-			if (e.origin !== "https://runkit.com")
-				return;
+			if (e.origin !== "https://runkit.com") return;
 		
 			try {
 				var data = JSON.parse(e.data);

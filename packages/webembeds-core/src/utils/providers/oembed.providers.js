@@ -6,6 +6,7 @@ import Twitch from "./twitch.provider";
 import Glitch from "./glitch.provider";
 import Loom from "./loom.provider";
 import Codepen from "./codepen.provider";
+import Facebook from "./facebook.provider";
 
 const oEmbedProviders = [
   {
@@ -875,42 +876,6 @@ const oEmbedProviders = [
       },
     ],
   },
-  // {
-  //   provider_name: "Facebook",
-  //   provider_url: "https://www.facebook.com/",
-  //   endpoints: [
-  //     {
-  //       schemes: [
-  //         "https://www.facebook.com/*/posts/*",
-  //         "https://www.facebook.com/*/activity/*",
-  //         "https://www.facebook.com/photo.php?fbid=*",
-  //         "https://www.facebook.com/photos/*",
-  //         "https://www.facebook.com/permalink.php?story_fbid=*",
-  //         "https://www.facebook.com/media/set?set=*",
-  //         "https://www.facebook.com/questions/*",
-  //         "https://www.facebook.com/notes/*/*/*",
-  //       ],
-  //       url: "https://graph.facebook.com/v8.0/oembed_post",
-  //       discovery: false,
-  //     },
-  //     {
-  //       schemes: [
-  //         "https://www.facebook.com/*/videos/*",
-  //         "https://www.facebook.com/video.php?id=*",
-  //         "https://www.facebook.com/video.php?v=*",
-  //       ],
-  //       url: "https://graph.facebook.com/v8.0/oembed_video",
-  //       discovery: false,
-  //     },
-  //     {
-  //       schemes: [
-  //         "https://www.facebook.com/*",
-  //       ],
-  //       url: "https://graph.facebook.com/v8.0/oembed_page",
-  //       discovery: false,
-  //     },
-  //   ],
-  // },
   {
     provider_name: "Fader",
     provider_url: "https://app.getfader.com",
@@ -1383,70 +1348,6 @@ const oEmbedProviders = [
       },
     ],
   },
-  // {
-  //   provider_name: "Instagram",
-  //   provider_url: "https://instagram.com",
-  //   custom: true,
-  //   customClass: Instagram,
-  //   endpoints: [
-  //     {
-  //       schemes: [
-  //         "http://instagram.com/*/p/*,",
-  //         "http://www.instagram.com/*/p/*,",
-  //         "https://instagram.com/*/p/*,",
-  //         "https://www.instagram.com/*/p/*,",
-  //         "http://instagram.com/p/*",
-  //         "http://instagr.am/p/*",
-  //         "http://www.instagram.com/p/*",
-  //         "http://www.instagr.am/p/*",
-  //         "https://instagram.com/p/*",
-  //         "https://instagr.am/p/*",
-  //         "https://www.instagram.com/p/*",
-  //         "https://www.instagr.am/p/*",
-  //         "http://instagram.com/tv/*",
-  //         "http://instagr.am/tv/*",
-  //         "http://www.instagram.com/tv/*",
-  //         "http://www.instagr.am/tv/*",
-  //         "https://instagram.com/tv/*",
-  //         "https://instagr.am/tv/*",
-  //         "https://www.instagram.com/tv/*",
-  //         "https://www.instagr.am/tv/*",
-  //       ],
-  //       url: "https://api.instagram.com/oembed",
-  //       formats: [
-  //         "json",
-  //       ],
-  //     },
-  //     // {
-  //     //   schemes: [
-  //     //     "http://instagram.com/*/p/*,",
-  //     //     "http://www.instagram.com/*/p/*,",
-  //     //     "https://instagram.com/*/p/*,",
-  //     //     "https://www.instagram.com/*/p/*,",
-  //     //     "http://instagram.com/p/*",
-  //     //     "http://instagr.am/p/*",
-  //     //     "http://www.instagram.com/p/*",
-  //     //     "http://www.instagr.am/p/*",
-  //     //     "https://instagram.com/p/*",
-  //     //     "https://instagr.am/p/*",
-  //     //     "https://www.instagram.com/p/*",
-  //     //     "https://www.instagr.am/p/*",
-  //     //     "http://instagram.com/tv/*",
-  //     //     "http://instagr.am/tv/*",
-  //     //     "http://www.instagram.com/tv/*",
-  //     //     "http://www.instagr.am/tv/*",
-  //     //     "https://instagram.com/tv/*",
-  //     //     "https://instagr.am/tv/*",
-  //     //     "https://www.instagram.com/tv/*",
-  //     //     "https://www.instagr.am/tv/*",
-  //     //   ],
-  //     //   url: "https://graph.facebook.com/v8.0/instagram_oembed",
-  //     //   formats: [
-  //     //     "json",
-  //     //   ],
-  //     // },
-  //   ],
-  // },
   {
     provider_name: "Issuu",
     provider_url: "https://issuu.com/",
@@ -3902,6 +3803,85 @@ const customProviders = [
         discovery: false,
       },
     ],
+  },
+  {
+    provider_name: "Facebook",
+    provider_url: "https://www.facebook.com/",
+    endpoints: [
+      {
+        schemes: [
+          "https://www.facebook.com/*/posts/*",
+          "https://www.facebook.com/*/activity/*",
+          "https://www.facebook.com/photo.php?fbid=*",
+          "https://www.facebook.com/photos/*",
+          "https://www.facebook.com/permalink.php?story_fbid=*",
+          "https://www.facebook.com/media/set?set=*",
+          "https://www.facebook.com/questions/*",
+          "https://www.facebook.com/notes/*/*/*",
+        ],
+        url: "https://graph.facebook.com/v10.0/oembed_post",
+        discovery: false,
+      },
+      {
+        schemes: [
+          "https://www.facebook.com/*/videos/*",
+          "https://www.facebook.com/*/videos/{video-id}",
+          "https://www.facebook.com/video.php?id=*",
+          "https://www.facebook.com/video.php?v=*",
+          "https://fb.watch/*",
+        ],
+        url: "https://graph.facebook.com/v10.0/oembed_video",
+        discovery: false,
+      },
+      {
+        schemes: [
+          "https://www.facebook.com/*",
+        ],
+        url: "https://graph.facebook.com/v10.0/oembed_page",
+        discovery: false,
+      },
+    ],
+    custom: true,
+    customClass: Facebook,
+  },
+  {
+    provider_name: "Instagram",
+    provider_url: "https://instagram.com",
+    endpoints: [
+      {
+        schemes: [
+          "http://instagram.com/*/p/*,",
+          "http://www.instagram.com/*/p/*,",
+          "https://instagram.com/*/p/*,",
+          "https://www.instagram.com/*/p/*,",
+          "http://instagram.com/p/*",
+          "http://instagr.am/p/*",
+          "http://www.instagram.com/p/*",
+          "http://www.instagr.am/p/*",
+          "https://instagram.com/p/*",
+          "https://instagr.am/p/*",
+          "https://www.instagram.com/p/*",
+          "https://www.instagr.am/p/*",
+          "http://instagram.com/tv/*",
+          "http://instagr.am/tv/*",
+          "http://www.instagram.com/tv/*",
+          "http://www.instagr.am/tv/*",
+          "https://instagram.com/tv/*",
+          "https://instagr.am/tv/*",
+          "https://www.instagram.com/tv/*",
+          "https://www.instagr.am/tv/*",
+          "https://www.instagram.com/reel/*",
+          "https://instagram.com/reel/*",
+          "https://www.instagr.am/reel/*",
+        ],
+        url: "https://graph.facebook.com/v9.0/instagram_oembed",
+        formats: [
+          "json",
+        ],
+      },
+    ],
+    custom: true,
+    customClass: Instagram,
   },
 ];
 

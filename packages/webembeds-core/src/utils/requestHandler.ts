@@ -19,6 +19,7 @@ export const makeRequest = async (url: string): Promise<RequestResponseType> => 
     });
     return response;
   } catch (error) {
+    // console.log(error);
     return null;
   }
 };

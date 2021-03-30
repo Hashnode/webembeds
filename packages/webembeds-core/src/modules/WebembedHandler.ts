@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import oembed from "oembed";
 import tryEach from "async/tryEach";
 import Platform from "./Platform";
@@ -45,29 +46,37 @@ export default class WebembedHandler {
    *  must be made with embedURL, if no targetURL found, it will be the embedURL itself.
    */
   detectProvider = () => {
-    let destinationProvider: { endpoints: any; } | null = null;
+    let destinationProvider: { endpoints: any, provider_name: string } | null = null;
     let targetURL = null; // The endpoint that the embedURL should be queried upon
 
-    oEmbedProviders.forEach((provider: { endpoints: any[]; }) => {
-      provider.endpoints.forEach((endpoint) => {
-        if (endpoint.schemes && endpoint.schemes.length > 0) {
-          endpoint.schemes.forEach((scheme: string) => {
-            // eslint-disable-next-line no-useless-escape
-            if (this.embedURL.match(scheme.replace(/\*/g, ".*").replace(/\//g, "\/").replace(/\//g, "\\/"))) {
-              // TODO: Pattern match here
-              targetURL = endpoint.url;
-              destinationProvider = provider;
-            }
-          });
-        } else if (endpoint.url.match(this.embedURL)) {
+    let found = false;
+    oEmbedProviders.some((provider: { endpoints: any[], provider_name: string }) => {
+      provider.endpoints.some((endpoint) => {
+        if (!endpoint.schemes || endpoint.schemes.length === 0) {
           // If there are no schemes Ex. https://www.beautiful.ai/
           // Consider the url to be the targetURL
-          destinationProvider = provider;
-          targetURL = endpoint.url;
-        }
-      });
-    });
 
+          if (this.embedURL.match(endpoint.url.replace(/\*/g, ".*").replace(/\//g, "\/").replace(/\//g, "\\/"))) {
+            targetURL = endpoint.url;
+            destinationProvider = provider;
+            return true;
+          }
+          return false;
+        }
+
+        found = endpoint.schemes.some((scheme: string) => {
+          // eslint-disable-next-line no-useless-escape
+          if (this.embedURL.match(scheme.replace(/\*/g, ".*").replace(/\//g, "\/").replace(/\//g, "\\/"))) {
+            targetURL = endpoint.url;
+            destinationProvider = provider;
+            return true;
+          }
+          return false;
+        });
+        return found;
+      });
+      return found;
+    });
     return {
       provider: destinationProvider,
       targetURL: targetURL || this.embedURL,
