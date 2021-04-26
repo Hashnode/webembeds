@@ -176,16 +176,6 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
   return `<html lang="en">
 		<head>
 		<style>
-    body,
-    html {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif
-    }
-
-    * {
-      margin: 0;
-      padding: 0
-    }
-
     .link-card {
       width: 100%;
       background: #eee;
