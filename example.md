@@ -46,4 +46,4 @@
 
 %[https://fb.watch/4yOE3vHgMr]
 
-%[https://www.instagram.com/reel/CMgbGuOgo9l/?igshid=1pty8jxruxsd6]
+%[https://www.instagram.com/reel/CMgbGuOgo9l]
