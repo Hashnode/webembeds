@@ -125,7 +125,7 @@ function doRequest(url) {
         const dataURI = `data:${imageType};base64,${base64}`;
         const payload = {
           data: dataURI,
-          isDev: process.env.NODE_ENV === "development",
+          isDev: process.env.NODE_ENV !== "production",
         };
         const hnURL = "https://uploads.hashnode.com/api/upload";
         const cdnURL = "https://cdn.hashnode.com/";
