@@ -25,7 +25,7 @@ export default class Opensea extends Platform {
       </nft-card>
       <script src="https://unpkg.com/embeddable-nfts/dist/nft-card.min.js"></script>`;
     } else {
-      html = `<div style="position: relative; padding-bottom: 62.5%; height: 0;"><iframe src="${url.toString()}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>`;
+      html = `<div style="position: relative; padding-bottom: 62.5%; height: 0;"><iframe src="${url.toString()}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid #d1d1d1"></iframe></div>`;
     }
 
     return {
