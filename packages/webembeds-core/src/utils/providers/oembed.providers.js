@@ -7,6 +7,7 @@ import Glitch from "./glitch.provider";
 import Loom from "./loom.provider";
 import Codepen from "./codepen.provider";
 import Facebook from "./facebook.provider";
+import Opensea from "./opensea.provider";
 
 const oEmbedProviders = [
   {
@@ -3782,6 +3783,21 @@ const customProviders = [
       {
         schemes: [
           "https://www.loom.com/share/*",
+        ],
+        url: "https://loom.com",
+        discovery: false,
+      },
+    ],
+  },
+  {
+    provider_name: "Opensea",
+    provider_url: "https://opensea.io/",
+    custom: true,
+    customClass: Opensea,
+    endpoints: [
+      {
+        schemes: [
+          "https://opensea.io/*",
         ],
         url: "https://loom.com",
         discovery: false,
