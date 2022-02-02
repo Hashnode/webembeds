@@ -3799,7 +3799,7 @@ const customProviders = [
         schemes: [
           "https://opensea.io/*",
         ],
-        url: "https://loom.com",
+        url: "https://opensea.io",
         discovery: false,
       },
     ],
