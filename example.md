@@ -1,5 +1,11 @@
 ## Markdown embed examples
 
+%[https://opensea.io/assets/0x1301566b3cb584e550a02d09562041ddc4989b91/28]
+
+%[https://opensea.io/assets/0x495f947276749ce646f68ac8c248420045cb7b5e/103558253085473991925726424936776054683291300677177700259118885402889773121537]
+
+%[https://opensea.io/collection/cyberpunk-vol-1]
+
 %[https://codesandbox.io/s/y2lrywpk21]
 
 %[https://codepen.io/szs/pen/JhgKC]
