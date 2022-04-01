@@ -17,11 +17,17 @@ export default class Opensea extends Platform {
 
     if (url.pathname.includes("/assets")) {
       const pathnameChunks = url.pathname.split("/");
-      const contractAddress = pathnameChunks[2];
-      const tokenId = pathnameChunks[3];
+
+      const hasNetwork = pathnameChunks.length === 5;
+      const network = hasNetwork ? pathnameChunks[2] : "mainnet";
+      const contractAddress = hasNetwork ? pathnameChunks[3] : pathnameChunks[2];
+      const tokenId = hasNetwork ? pathnameChunks[4] : pathnameChunks[3];
+
       html = `<nft-card
-      contractAddress="${sanitizeHtml(contractAddress)}"
-      tokenId="${sanitizeHtml(tokenId)}">
+        contractAddress="${sanitizeHtml(contractAddress)}"
+        tokenId="${sanitizeHtml(tokenId)}"
+        network="${sanitizeHtml(network)}"
+      >
       </nft-card>
       <script src="https://unpkg.com/embeddable-nfts/dist/nft-card.min.js"></script>`;
     } else {
