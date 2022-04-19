@@ -2695,6 +2695,20 @@ const oEmbedProviders = [
     ],
   },
   {
+    provider_name: "snappify",
+    provider_url: "https://snappify.io/",
+    endpoints: [
+      {
+        schemes: [
+          "https://snappify.io/view/*",
+          "https://snappify.io/embed/*",
+        ],
+        url: "https://api.snappify.io/oembed/",
+        discovery: true,
+      },
+    ],
+  },
+  {
     provider_name: "SocialExplorer",
     provider_url: "https://www.socialexplorer.com/",
     endpoints: [
