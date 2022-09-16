@@ -6,6 +6,7 @@ import * as Twitch from "./twitch.provider";
 import * as Glitch from "./glitch.provider";
 import * as Facebook from "./facebook.provider";
 import * as Opensea from "./opensea.provider";
+import * as Snappify from "./snappify.provider";
 
 export default {
   GithubGist,
@@ -16,4 +17,5 @@ export default {
   Glitch,
   Facebook,
   Opensea,
+  Snappify,
 };
