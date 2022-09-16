@@ -7,6 +7,8 @@ import Glitch from "./glitch.provider";
 import Loom from "./loom.provider";
 import Codepen from "./codepen.provider";
 import Facebook from "./facebook.provider";
+import Opensea from "./opensea.provider";
+import Snappify from "./snappify.provider";
 
 const oEmbedProviders = [
   {
@@ -2696,14 +2698,13 @@ const oEmbedProviders = [
   {
     provider_name: "snappify",
     provider_url: "https://snappify.io/",
+    custom: true,
+    customClass: Snappify,
     endpoints: [
       {
-        schemes: [
-          "https://snappify.io/view/*",
-          "https://snappify.io/embed/*",
-        ],
+        schemes: ["https://snappify.io/view/*", "https://snappify.io/embed/*"],
         url: "https://api.snappify.io/oembed/",
-        discovery: true,
+        discovery: false,
       },
     ],
   },
@@ -3798,6 +3799,21 @@ const customProviders = [
           "https://www.loom.com/share/*",
         ],
         url: "https://loom.com",
+        discovery: false,
+      },
+    ],
+  },
+  {
+    provider_name: "Opensea",
+    provider_url: "https://opensea.io/",
+    custom: true,
+    customClass: Opensea,
+    endpoints: [
+      {
+        schemes: [
+          "https://opensea.io/*",
+        ],
+        url: "https://opensea.io",
         discovery: false,
       },
     ],
