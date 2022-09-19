@@ -24,7 +24,7 @@ export default class Snappify extends Platform {
 
     const wrapperDivStyle = `position:relative;overflow:hidden;margin-left:auto;margin-right:auto;border-radius:10px;width:100%;max-width:${data.width}px`;
     const aspectRatioDivStyle = `width:100%;padding-bottom:${aspectRatioPercentage}%`;
-    const iframeStyle = "background:linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);position:absolute;left:0;top:0;width:100%";
+    const iframeStyle = "position:absolute;left:0;top:0;width:100%";
 
     return {
       version: 0.1,
