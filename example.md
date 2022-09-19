@@ -52,4 +52,6 @@
 
 %[https://fb.watch/4yOE3vHgMr]
 
-%[https://www.instagram.com/reel/CMgbGuOgo9l]
+%[https://www.instagram.com/reel/CMgbGuOgo9
+
+%[https://snappify.io/view/bcc54061-6e8f-44c5-a4f4-1abcad520108]
