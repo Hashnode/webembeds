@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Loader from "../components/Loader";
 
 const links: any = {

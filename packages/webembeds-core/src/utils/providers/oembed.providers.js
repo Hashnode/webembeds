@@ -1,14 +1,14 @@
-import Codepen from "./codepen.provider";
-import ExpoSnack from "./expo.provider";
-import Facebook from "./facebook.provider";
-import Giphy from "./giphy.provider";
 import GithubGist from "./gist.provider";
-import Glitch from "./glitch.provider";
+import ExpoSnack from "./expo.provider";
+import Giphy from "./giphy.provider";
 import Instagram from "./instagram.provider";
+import Twitch from "./twitch.provider";
+import Glitch from "./glitch.provider";
 import Loom from "./loom.provider";
+import Codepen from "./codepen.provider";
+import Facebook from "./facebook.provider";
 import Opensea from "./opensea.provider";
 import Snappify from "./snappify.provider";
-import Twitch from "./twitch.provider";
 
 const oEmbedProviders = [
   {
