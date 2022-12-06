@@ -2697,13 +2697,13 @@ const oEmbedProviders = [
   },
   {
     provider_name: "snappify",
-    provider_url: "https://snappify.io/",
+    provider_url: "https://snappify.com/",
     custom: true,
     customClass: Snappify,
     endpoints: [
       {
-        schemes: ["https://snappify.io/view/*", "https://snappify.io/embed/*"],
-        url: "https://api.snappify.io/oembed/",
+        schemes: ["https://snappify.io/view/*", "https://snappify.io/embed/*", "https://snappify.com/view/*", "https://snappify.com/embed/*"],
+        url: "https://api.snappify.com/oembed/",
         discovery: false,
       },
     ],

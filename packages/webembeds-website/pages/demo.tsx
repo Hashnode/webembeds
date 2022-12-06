@@ -22,7 +22,7 @@ const links: any = {
 	anchor: "https://anchor.fm/startapodcast/episodes/Whats-your-podcast-about-e17krq/a-a2q3ft",
 	loom: "https://www.loom.com/share/0281766fa2d04bb788eaf19e65135184",
 	vimeo: "https://vimeo.com/485593347",
-    snappify: "https://snappify.io/view/bcc54061-6e8f-44c5-a4f4-1abcad520108",
+    snappify: "https://snappify.com/view/bcc54061-6e8f-44c5-a4f4-1abcad520108",
 	fallback: "https://github.com",
 };
 
