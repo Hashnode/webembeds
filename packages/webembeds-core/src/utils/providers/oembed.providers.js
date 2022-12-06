@@ -1,14 +1,14 @@
-import GithubGist from "./gist.provider";
-import ExpoSnack from "./expo.provider";
-import Giphy from "./giphy.provider";
-import Instagram from "./instagram.provider";
-import Twitch from "./twitch.provider";
-import Glitch from "./glitch.provider";
-import Loom from "./loom.provider";
 import Codepen from "./codepen.provider";
+import ExpoSnack from "./expo.provider";
 import Facebook from "./facebook.provider";
+import Giphy from "./giphy.provider";
+import GithubGist from "./gist.provider";
+import Glitch from "./glitch.provider";
+import Instagram from "./instagram.provider";
+import Loom from "./loom.provider";
 import Opensea from "./opensea.provider";
 import Snappify from "./snappify.provider";
+import Twitch from "./twitch.provider";
 
 const oEmbedProviders = [
   {
@@ -2697,13 +2697,13 @@ const oEmbedProviders = [
   },
   {
     provider_name: "snappify",
-    provider_url: "https://snappify.io/",
+    provider_url: "https://snappify.com/",
     custom: true,
     customClass: Snappify,
     endpoints: [
       {
-        schemes: ["https://snappify.io/view/*", "https://snappify.io/embed/*"],
-        url: "https://api.snappify.io/oembed/",
+        schemes: ["https://snappify.io/view/*", "https://snappify.io/embed/*", "https://snappify.com/view/*", "https://snappify.com/embed/*"],
+        url: "https://api.snappify.com/oembed/",
         discovery: false,
       },
     ],

@@ -54,4 +54,4 @@
 
 %[https://www.instagram.com/reel/CMgbGuOgo9
 
-%[https://snappify.io/view/bcc54061-6e8f-44c5-a4f4-1abcad520108]
+%[https://snappify.com/view/bcc54061-6e8f-44c5-a4f4-1abcad520108]

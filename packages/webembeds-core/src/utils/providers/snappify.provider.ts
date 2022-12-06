@@ -16,7 +16,7 @@ export default class Snappify extends Platform {
       return null;
     }
 
-    const host = "https://snappify.io/";
+    const host = "https://snappify.com/";
     let path = this.embedURL.split(host)[1];
     path = path.replace("view", "embed");
 
