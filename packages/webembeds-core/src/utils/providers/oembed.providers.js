@@ -2337,14 +2337,18 @@ const oEmbedProviders = [
   },
   {
     provider_name: "Replit",
-    provider_url: "https://repl.it/",
+    provider_url: "https://replit.com/",
     endpoints: [
       {
         schemes: [
           "https://repl.it/@*/*",
+          "https://replit.com/@*/*",
         ],
-        url: "https://repl.it/data/oembed",
+        url: "https://replit.com/data/oembed",
         discovery: true,
+        example_urls: [
+          "https://replit.com/data/oembed/?url=https://replit.com/@replitfaris/python-hello-world",
+        ],
       },
     ],
   },
