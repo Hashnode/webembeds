@@ -3699,6 +3699,20 @@ const oEmbedProviders = [
       },
     ],
   },
+  {
+    provider_name: "StackBlitz",
+    provider_url: "https://stackblitz.com",
+    endpoints: [
+      {
+        schemes: [
+          "http://stackblitz.com/edit/*",
+          "https://stackblitz.com/edit/*",
+        ],
+        url: "https://stackblitz.com/api/oembed",
+        discovery: true,
+      },
+    ],
+  },
 ];
 
 const additionalOEmbedProviders = [
