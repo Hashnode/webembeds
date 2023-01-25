@@ -1,9 +1,8 @@
 /* eslint-disable no-tabs */
-import request from "request";
 import urlMetadata from "url-metadata";
 import cheerio from "cheerio";
-import fetch from "node-fetch";
 import type { CustomAtrributes, OEmbedResponseType } from "../types";
+import { fetchGraphQL } from "./graphql";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -108,48 +107,24 @@ export const wrapHTML = (oembedResponse: OEmbedResponseType,
   return $.html();
 };
 
-/**
- * Promise based request
- * @param {*} url
- */
-function doRequest(url) {
-  return new Promise((resolve, reject) => {
-    request.get(
-      { url, encoding: "binary" },
-      (error: any, imageResponse: { headers: { [x: string]: any } }, imageBody: string) => {
-        if (error) {
-          return reject(error);
-        }
-        const imageType = imageResponse.headers["content-type"];
-        const base64 = new Buffer(imageBody, "binary").toString("base64");
-        const dataURI = `data:${imageType};base64,${base64}`;
-        const payload = {
-          data: dataURI,
-          isDev: process.env.NODE_ENV !== "production",
-        };
-        const hnURL = "https://uploads.hashnode.com/api/upload";
-        const cdnURL = "https://cdn.hashnode.com/";
-        fetch(hnURL, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            "Cloudmate-Authorization": process.env.cloudmateKey || "",
-            Accept: "*/*",
-          },
-          body: JSON.stringify(payload),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (!data.Key) {
-              console.log("No cloudmate key");
-              return;
-            }
-            const imageUrl = cdnURL + data.Key;
-            resolve(imageUrl);
-          });
-      },
-    );
+async function uploadImageByUrl(url: string) {
+  const { data, errors } = await fetchGraphQL({
+    query: `
+      mutation UploadImageByURL($url: ImageUrl!) {
+        uploadImageByURL(url: $url)
+      }
+    `,
+    variables: {
+      url,
+    },
   });
+
+  if (!data?.uploadImageByUrl || !!errors) {
+    console.error("Unexpected response uploading image", { data, errors });
+    throw new Error("Error uploading image");
+  }
+
+  return data.uploadImageByURL;
 }
 
 export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
@@ -160,7 +135,7 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
 
   if (isProd) {
     // Download the image and upload to our CDN
-    coverImage = (await doRequest(coverImage)) || coverImage;
+    coverImage = (await uploadImageByUrl(coverImage)) || coverImage;
   }
 
   try {
