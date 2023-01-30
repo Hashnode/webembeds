@@ -119,7 +119,7 @@ async function uploadImageByUrl(url: string) {
     },
   });
 
-  if (!data?.uploadImageByUrl || !!errors) {
+  if (!data?.uploadImageByURL || !!errors) {
     console.error("Unexpected response uploading image", { data, errors });
     throw new Error("Error uploading image");
   }
