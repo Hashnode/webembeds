@@ -108,6 +108,16 @@ export const wrapHTML = (oembedResponse: OEmbedResponseType,
 };
 
 async function uploadImageByUrl(url: string) {
+  try {
+    // eslint-disable-next-line no-unused-vars
+    const properURL = new URL(url);
+    if (properURL.hostname.includes("hashnode.com")) {
+      return url;
+    }
+  } catch (error) {
+    throw new Error("Invalid URL");
+  }
+
   const { data, errors } = await fetchGraphQL({
     query: `
       mutation UploadImageByURL($url: ImageUrl!) {
