@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
 
-  res.setHeader("Cache-Control", "s-maxage=2592000");
+  res.setHeader("Cache-Control", "public, s-maxage=31540000"); // 1 year
 
   // Twitch needs a parent url where the embed is being used.
 
