@@ -108,14 +108,14 @@ export const wrapHTML = (oembedResponse: OEmbedResponseType,
 };
 
 async function uploadImageByUrl(url: string) {
+  let properURL: URL;
   try {
-    // eslint-disable-next-line no-unused-vars
-    const properURL = new URL(url);
-    if (properURL.hostname.includes("hashnode.com")) {
+    properURL = new URL(url);
+    if (properURL.hostname.includes("hashnode.com") || properURL.hostname.includes("images.unsplash.com")) {
       return url;
     }
   } catch (error) {
-    throw new Error("Invalid URL");
+    throw new Error(`Invalid URL: ${url}`);
   }
 
   const { data, errors } = await fetchGraphQL({
@@ -125,7 +125,7 @@ async function uploadImageByUrl(url: string) {
       }
     `,
     variables: {
-      url,
+      url: properURL.toString(),
     },
   });
 
