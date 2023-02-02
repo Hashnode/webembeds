@@ -111,7 +111,7 @@ async function uploadImageByUrl(url: string) {
   let properURL: URL;
   try {
     properURL = new URL(url);
-    if (properURL.hostname.includes("hashnode.com")) {
+    if (properURL.hostname.includes("hashnode.com") || properURL.hostname.includes("images.unsplash.com")) {
       return url;
     }
   } catch (error) {
