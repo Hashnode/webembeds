@@ -22,5 +22,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       ...restOfTheQueryParams,
     },
   });
+
   res.json({ data: embedResponse });
 }
