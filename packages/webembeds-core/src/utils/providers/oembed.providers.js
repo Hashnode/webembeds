@@ -9,6 +9,7 @@ import Codepen from "./codepen.provider";
 import Facebook from "./facebook.provider";
 import Opensea from "./opensea.provider";
 import Snappify from "./snappify.provider";
+import Tenor from "./tenor.provider";
 
 const oEmbedProviders = [
   {
@@ -3803,6 +3804,20 @@ const customProviders = [
         ],
         url: "https://giphy.com/services/oembed",
         discovery: false,
+      },
+    ],
+  },
+  {
+    provider_name: "Tenor",
+    provider_url: "https://tenor.com",
+    custom: true,
+    customClass: Tenor,
+    endpoints: [
+      {
+        schemes: [
+          "https://tenor.com/*",
+        ],
+        url: "https://tenor.com",
       },
     ],
   },
