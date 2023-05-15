@@ -170,7 +170,7 @@ export default class WebembedHandler {
         });
     }
 
-    tryEach([this.generateOEmbed, this.generateManually, this.generateFallback],
+    tryEach([this.generateManually, this.generateFallback],
       (error: any, results: any): void => {
         if (error) {
           reject(error);

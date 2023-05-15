@@ -5,7 +5,7 @@
   "license": "MIT",
   "types": "build/index.d.ts",
   "scripts": {
-    "watch": "NODE_ENV=development node_modules/.bin/webpack --watch",
+    "watch": "rimraf ./build && NODE_ENV=development node_modules/.bin/webpack --watch",
     "build": "NODE_ENV=production node_modules/.bin/webpack",
     "test": "jest"
   },
@@ -38,6 +38,7 @@
     "node-fetch": "^2.6.1",
     "oembed": "^0.1.2",
     "request": "^2.88.2",
+    "rimraf": "^5.0.0",
     "sanitize-html": "^2.6.1",
     "url-metadata": "^2.5.0",
     "url-parse": "^1.4.7"
