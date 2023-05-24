@@ -170,7 +170,17 @@ export default class WebembedHandler {
         });
     }
 
-    tryEach([this.generateManually, this.generateFallback],
+    const { provider } = this.providerDetails;
+
+    let actions: any = [];
+
+    if (provider && provider.provider_name === "Twitter") {
+      actions = [this.generateManually, this.generateFallback];
+    } else {
+      actions = [this.generateOEmbed, this.generateManually, this.generateFallback];
+    }
+
+    tryEach(actions,
       (error: any, results: any): void => {
         if (error) {
           reject(error);
