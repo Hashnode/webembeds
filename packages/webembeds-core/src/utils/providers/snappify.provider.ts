@@ -30,7 +30,7 @@ export default class Snappify extends Platform {
       version: 0.1,
       type: "rich",
       title: "snappify",
-      html: `<div style="${wrapperDivStyle}"><div style="${aspectRatioDivStyle}"></div><iframe width="${data.width}" height="${data.height}" title="${data.title}" src="${host + path}?responsive" allow="clipboard-write" style="${iframeStyle}" frameborder="0"></iframe></div>`,
+      html: `<div style="${wrapperDivStyle}"><div style="${aspectRatioDivStyle}"></div><iframe width="${data.width}" height="${data.height}" title="${data.title}" src="${host + path}?responsive" allow="clipboard-write" allowfullscreen style="${iframeStyle}" frameborder="0"></iframe></div>`,
     };
   };
 }
