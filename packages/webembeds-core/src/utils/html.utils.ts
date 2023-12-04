@@ -121,21 +121,25 @@ async function uploadImageByUrl(url: string) {
 
   const { data, errors } = await fetchGraphQL({
     query: `
-      mutation UploadImageByURL($url: ImageUrl!) {
-        uploadImageByURL(url: $url)
+      mutation UploadImageByURL($input: UploadImageInput!) {
+        uploadImageByURL(input: $input) {
+          imageURL
+        }
       }
     `,
     variables: {
-      url: properURL.toString(),
+      input: {
+        url: properURL.toString(),
+      },
     },
   });
 
-  if (!data?.uploadImageByURL || !!errors) {
+  if (!data || !data.uploadImageByURL?.imageURL || !!errors) {
     console.error("Unexpected response uploading image", { data, errors });
     throw new Error("Error uploading image");
   }
 
-  return data.uploadImageByURL;
+  return data.uploadImageByURL.imageURL;
 }
 
 export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
