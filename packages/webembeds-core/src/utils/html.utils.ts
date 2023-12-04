@@ -121,8 +121,8 @@ async function uploadImageByUrl(url: string) {
 
   const { data, errors } = await fetchGraphQL({
     query: `
-      mutation UploadImageByURLV2($input: UploadImageInput!) {
-        uploadImageByURLV2(input: $input) {
+      mutation UploadImageByURL($input: UploadImageInput!) {
+        uploadImageByURL(input: $input) {
           imageURL
         }
       }
@@ -134,12 +134,12 @@ async function uploadImageByUrl(url: string) {
     },
   });
 
-  if (!data || !data.uploadImageByURLV2?.imageURL || !!errors) {
+  if (!data || !data.uploadImageByURL?.imageURL || !!errors) {
     console.error("Unexpected response uploading image", { data, errors });
     throw new Error("Error uploading image");
   }
 
-  return data.uploadImageByURLV2.imageURL;
+  return data.uploadImageByURL.imageURL;
 }
 
 export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
