@@ -33,7 +33,9 @@ export default class WebembedHandler {
 
   constructor(incomingURL: string, options: any) {
     const { queryParams = {} } = options;
-    this.embedURL = incomingURL;
+    // Replace x.com with twitter.com before doing anything as Provider is setup for twitter.com
+    const twitterXRegex = new RegExp(/https?:\/\/([a-zA-Z0-9-]+\.)*x\.com/);
+    this.embedURL = incomingURL.match(twitterXRegex) ? incomingURL.replace(twitterXRegex, "https://twitter.com") : incomingURL;
     this.options = options;
     this.queryParams = queryParams;
     this.providerDetails = this.detectProvider();
