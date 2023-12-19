@@ -150,7 +150,7 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
   }
 
   try {
-    mainURL = new URL(data["og:url"] || data.url).hostname;
+    mainURL = new URL(data.url || data["og:url"]).hostname;
   } catch (error) {
     mainURL = "/";
   }
@@ -168,7 +168,7 @@ export const wrapFallbackHTML = async (data: urlMetadata.Result) => {
         <a
           target="_blank"
           rel="noopener"
-          href=${data["og:url"] || data.url}
+          href=${data.url || data["og:url"]}
           class="tw-we-w-full tw-we-group hover-tw-we-border-slate-900 tw-we-text-slate-900 tw-we-grid tw-we-border tw-we-border-slate-200 tw-we-grid-cols-12 tw-we-bg-slate-50 tw-we-shadow-md tw-we-rounded tw-we-overflow-hidden"
         >
           <div
