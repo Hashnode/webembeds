@@ -101,7 +101,7 @@ export const wrapHTML = (oembedResponse: OEmbedResponseType,
     iframe.attr("class", "webembed-iframe");
 
     $("iframe").wrap(
-      `<div class="webembed-wrapper" style="position: relative;overflow: hidden; padding-top: ${paddingTop * 100}%;"></div>`,
+      `<div class="webembed-wrapper" style="position: relative;overflow: hidden; padding-top: 56.25%;"></div>`,
     );
   }
 
